@@ -1,7 +1,8 @@
 import {
   BaseEntity,
   Column,
-  Entity, OneToMany,
+  Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
@@ -25,6 +26,10 @@ export class Ship extends BaseEntity {
   @Column()
   password: string;
 
-  @OneToMany(type=> Routes, route=> route.ship, {eager:true})
+  @OneToMany(
+    type => Routes,
+    route => route.ship,
+    { eager: true },
+  )
   destinations: Routes[];
 }
