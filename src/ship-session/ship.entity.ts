@@ -8,7 +8,7 @@ import {
 import { Routes } from './routes.entity';
 
 @Entity()
-@Unique(['shipName', 'shipUrl'])
+@Unique(['shipName', 'shipAdminPageUrl'])
 export class Ship extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -17,7 +17,7 @@ export class Ship extends BaseEntity {
   shipName: string;
 
   @Column()
-  shipUrl: string;
+  shipAdminPageUrl: string;
 
   @Column()
   username: string;
