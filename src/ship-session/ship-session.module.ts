@@ -5,7 +5,5 @@ import { Module } from '@nestjs/common';
  * 1. Holding the ship database models
  * 2.Running the scraping session
  */
-@Module({
-
-})
+@Module({})
 export class ShipSessionModule {}

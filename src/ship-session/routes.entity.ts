@@ -1,21 +1,21 @@
 import {
   BaseEntity,
   Column,
-  Entity, ManyToOne, OneToMany,
+  Entity,
+  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
 import { Ship } from './ship.entity';
 
 @Entity()
-
 export class Routes extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-
   @Column()
-  routeName:string; //example: cox's bazaar to saint martin
+  routeName: string; //example: cox's bazaar to saint martin
 
   @Column()
   optionSelectorIdLeavingFrom: string;
@@ -27,8 +27,10 @@ export class Routes extends BaseEntity {
   viewSeatSelector: string;
 
   //TODO: find out what eager:false do
-  @ManyToOne(type=> Ship, ship=>ship.destinations, {eager: false})
+  @ManyToOne(
+    type => Ship,
+    ship => ship.destinations,
+    { eager: false },
+  )
   ship: Ship;
-
-
 }

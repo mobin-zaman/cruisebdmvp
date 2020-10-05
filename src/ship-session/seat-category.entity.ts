@@ -7,7 +7,6 @@ import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
  * deck - the floor of the ship
  */
 export class SeatCategory extends BaseEntity {
-
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -16,5 +15,4 @@ export class SeatCategory extends BaseEntity {
 
   @Column()
   categoryButtonSelector: string;
-
 }
