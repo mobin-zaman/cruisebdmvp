@@ -4,6 +4,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ShipSessionModule } from './ship-session/ship-session.module';
 import { Ship } from './ship-session/ship.entity';
 import { Routes } from './ship-session/routes.entity';
+import { AuthModule } from './auth/auth.module';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { Routes } from './ship-session/routes.entity';
       }),
     }),
     ShipSessionModule,
+    AuthModule,
+    BookingModule,
   ],
 })
 export class AppModule {}
