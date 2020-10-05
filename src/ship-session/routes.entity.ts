@@ -13,8 +13,9 @@ export class Routes extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
+
   @Column()
-  routeName:string;
+  routeName:string; //example: cox's bazaar to saint martin
 
   @Column()
   optionSelectorIdLeavingFrom: string;
