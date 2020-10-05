@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ShipSessionModule } from './ship-session/ship-session.module';
-import { Ship } from './ship-session/ship.entity';
-import { Routes } from './ship-session/routes.entity';
+import { ShipSessionModule } from './shipdb/ship-session.module';
+import { Ship } from './shipdb/ship.entity';
+import { Routes } from './shipdb/routes.entity';
 
 @Module({
   imports: [
