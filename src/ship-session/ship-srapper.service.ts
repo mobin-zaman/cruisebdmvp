@@ -1,8 +1,5 @@
-import { Injectable } from '@nestjs/common';
 import puppeteer, { Browser, Page } from 'puppeteer';
-import { Ship } from './ship.entity';
 
-@Injectable()
 export class ScrappingService {
   private browser: Browser;
   private page: Page;
