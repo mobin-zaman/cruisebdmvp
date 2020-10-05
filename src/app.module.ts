@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ShipSessionModule } from './ship-session/ship-session.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         database: configService.get('DATABASE_NAME')
       }),
     }),
+    ShipSessionModule,
   ],
 })
 export class AppModule {}
