@@ -6,6 +6,6 @@ import { Module } from '@nestjs/common';
  * 2.Running the scraping session
  */
 @Module({
-  
+
 })
 export class ShipSessionModule {}
