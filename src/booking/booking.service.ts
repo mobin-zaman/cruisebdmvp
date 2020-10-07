@@ -8,7 +8,11 @@ export class BookingService {
   ) {
   }
 
-  getShips() {
-    return this.shipSessionService.getAllShip()
+  async getShips() {
+    const ships = await this.shipSessionService.getAllShip();
+    console.log("ships username: ", ships[0].username);
+    return ships;
+    // return this.shipSessionService.getAllShip()
+
   }
 }
