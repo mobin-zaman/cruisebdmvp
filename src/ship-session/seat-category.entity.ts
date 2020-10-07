@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Ship } from './ship.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 /**
@@ -20,6 +21,7 @@ export class SeatCategory extends BaseEntity {
   @Column()
   categoryName: string;
 
+  @Exclude()
   @Column()
   categoryButtonSelector: string;
 

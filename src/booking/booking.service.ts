@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ShipSessionService } from '../ship-session/ship-session.service';
 
 @Injectable()
@@ -9,7 +9,13 @@ export class BookingService {
     return this.shipSessionService.getAllShip();
   }
 
-  async getShipCategory() {
+  async getSeatCategories(id: number) {
+    try {
+    return await this.shipSessionService.getSeatCategories(id);
 
+    } catch (e) {
+      console.log("Error getting ship categories: ", e);
+      throw new NotFoundException(e.message);
+    }
   }
 }

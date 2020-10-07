@@ -13,4 +13,12 @@ export class ShipSessionService {
   getAllShip(): Promise<Ship[]> {
     return this.shipRepository.find();
   }
+
+  async getSeatCategories(id) {
+     const ships: Ship = await this.shipRepository.findOne(id);
+
+     if(!ships) throw Error('Ship not found');
+
+     return await ships.seatCategories;
+  }
 }

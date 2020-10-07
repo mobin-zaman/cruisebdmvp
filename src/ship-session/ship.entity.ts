@@ -39,10 +39,14 @@ export class Ship extends BaseEntity {
   )
   routes: Routes[];
 
+  /**
+   * This how to do lazy loading in typeorm
+   * ref: https://github.com/typeorm/typeorm/blob/master/docs/eager-and-lazy-relations.md
+   */
   @OneToMany(
     type => SeatCategory,
     seatCategory => seatCategory.ship,
     { eager: false },
   )
-  seatCategories: SeatCategory[];
+  seatCategories: Promise<SeatCategory[]>;
 }
