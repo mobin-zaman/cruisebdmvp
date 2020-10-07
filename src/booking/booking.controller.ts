@@ -1,6 +1,6 @@
 import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { BookingService } from './booking.service';
-import { TransformInterceptor } from './interceptor';
+import { TransformInterceptor } from './transform.interceptor';
 
 @Controller('booking')
 export class BookingController {
@@ -18,12 +18,13 @@ export class BookingController {
     return this.bookingService.getShips();
   }
 
-  @Get('/ships/seat-category/:id')
+  @Get('/ships/:ships_id/seat-category/')
   @UseInterceptors(TransformInterceptor)
   getSeatCategory(
-    @Param('id') id
+    @Param('ships_id') shipId
   ) {
-    return this.bookingService.getSeatCategories(id);
-
+    return this.bookingService.getSeatCategories(shipId);
   }
+
+
 }
