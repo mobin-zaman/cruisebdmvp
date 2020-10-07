@@ -1,5 +1,6 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
 import { BookingService } from './booking.service';
+import { TransformInterceptor } from './interceptor';
 
 @Controller('booking')
 export class BookingController {
@@ -10,6 +11,7 @@ export class BookingController {
    * TODO: fix the return type
    */
   @Get('/ships')
+  @UseInterceptors(TransformInterceptor)
   getShips() {
     return this.bookingService.getShips();
   }
@@ -18,5 +20,4 @@ export class BookingController {
   getSeatCategory() {
     return null;
   }
-
 }

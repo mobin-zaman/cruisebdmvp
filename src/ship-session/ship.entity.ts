@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { Routes } from './routes.entity';
 import { SeatCategory } from './seat-category.entity';
+import {Exclude} from 'class-transformer';
 
 @Entity()
 @Unique(['shipName', 'shipAdminPageUrl'])
@@ -18,21 +19,17 @@ export class Ship extends BaseEntity {
   @Column()
   shipName: string;
 
-  @Column({
-    select: false
-  })
+  @Column()
   shipAdminPageUrl: string;
 
   //NOTE: this {select: false} options allows to hide this field from the select result
-  @Column({
-    select: false,
-  })
+  @Exclude()
+  @Column()
   username: string;
 
   //NOTE: this {select: false} options allows to hide this field from the select result
-  @Column({
-    select: false,
-  })
+  @Exclude()
+  @Column()
   password: string;
 
   @OneToMany(
@@ -40,12 +37,12 @@ export class Ship extends BaseEntity {
     route => route.ship,
     { eager: true },
   )
-  destinations: Routes[];
+  routes: Routes[];
 
   @OneToMany(
     type => SeatCategory,
     seatCategory => seatCategory.ship,
-    {eager: false}
+    { eager: false },
   )
   seatCategories: SeatCategory[];
 }

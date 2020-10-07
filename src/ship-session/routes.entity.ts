@@ -8,6 +8,7 @@ import {
   Unique,
 } from 'typeorm';
 import { Ship } from './ship.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Routes extends BaseEntity {
@@ -17,25 +18,22 @@ export class Routes extends BaseEntity {
   @Column()
   routeName: string; //example: cox's bazaar to saint martin
 
-  @Column({
-    select: false,
-  })
+  @Exclude()
+  @Column()
   optionSelectorIdLeavingFrom: string;
 
-  @Column({
-    select: false,
-  })
+  @Exclude()
+  @Column()
   optionSelectorIdGoingTo: string;
 
-  @Column({
-    select: false,
-  })
+  @Exclude()
+  @Column()
   viewSeatSelector: string;
 
   //TODO: find out what eager:false do
   @ManyToOne(
     type => Ship,
-    ship => ship.destinations,
+    ship => ship.routes,
     { eager: false },
   )
   ship: Ship;
