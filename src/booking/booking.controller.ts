@@ -1,6 +1,14 @@
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseInterceptors,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BookingService } from './booking.service';
 import { TransformInterceptor } from './transform.interceptor';
+import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
+import { SeatidCategoryidValidationPipe } from './pipes/seatid-categoryid-validation.pipe';
 
 @Controller('booking')
 export class BookingController {
@@ -20,11 +28,17 @@ export class BookingController {
 
   @Get('/ships/:ships_id/seat-category/')
   @UseInterceptors(TransformInterceptor)
-  getSeatCategory(
-    @Param('ships_id') shipId
-  ) {
+  getSeatCategory(@Param('ships_id') shipId) {
     return this.bookingService.getSeatCategories(shipId);
   }
 
-
+  @Get('/ships/:shipsId/seat_category/:categoryId')
+  @UseInterceptors(TransformInterceptor)
+  getSeatCategoryInformation(
+    @Param(SeatidCategoryidValidationPipe) getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
+  ) {
+    return this.bookingService.getSeatCategoryInformation(
+      getSeatCategoryInfoDto,
+    );
+  }
 }

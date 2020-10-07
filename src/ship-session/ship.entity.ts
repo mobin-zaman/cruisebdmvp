@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { Routes } from './routes.entity';
 import { SeatCategory } from './seat-category.entity';
-import {Exclude} from 'class-transformer';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 @Unique(['shipName', 'shipAdminPageUrl'])
