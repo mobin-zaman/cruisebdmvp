@@ -8,7 +8,7 @@ import {
 import { BookingService } from './booking.service';
 import { TransformInterceptor } from './transform.interceptor';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
-import { SeatidCategoryidValidationPipe } from './pipes/seatid-categoryid-validation.pipe';
+import { ShipIdCategoryIdValidationPipe } from './pipes/seatid-categoryid-validation.pipe';
 
 @Controller('booking')
 export class BookingController {
@@ -32,10 +32,10 @@ export class BookingController {
     return this.bookingService.getSeatCategories(shipId);
   }
 
-  @Get('/ships/:shipsId/seat_category/:categoryId')
+  @Get('/ships/:shipId/seat_category/:categoryId')
   @UseInterceptors(TransformInterceptor)
   getSeatCategoryInformation(
-    @Param(SeatidCategoryidValidationPipe) getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
+    @Param(ShipIdCategoryIdValidationPipe) getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
     return this.bookingService.getSeatCategoryInformation(
       getSeatCategoryInfoDto,
