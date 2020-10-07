@@ -6,6 +6,7 @@ import { Ship } from './ship-session/ship.entity';
 import { Routes } from './ship-session/routes.entity';
 import { AuthModule } from './auth/auth.module';
 import { BookingModule } from './booking/booking.module';
+import { SeatCategory } from './ship-session/seat-category.entity';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { BookingModule } from './booking/booking.module';
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASS'),
         database: configService.get('DATABASE_NAME'),
-        entities: [Ship, Routes],
+        entities: [Ship, Routes, SeatCategory],
         synchronize: true,
       }),
     }),
