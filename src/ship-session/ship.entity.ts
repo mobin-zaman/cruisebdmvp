@@ -20,10 +20,16 @@ export class Ship extends BaseEntity {
   @Column()
   shipAdminPageUrl: string;
 
-  @Column()
+  //NOTE: this {select: false} options allows to hide this field from the select result
+  @Column({
+    select: false
+  })
   username: string;
 
-  @Column()
+  //NOTE: this {select: false} options allows to hide this field from the select result
+  @Column({
+    select: false
+  })
   password: string;
 
   @OneToMany(
