@@ -18,17 +18,17 @@ export class Routes extends BaseEntity {
   routeName: string; //example: cox's bazaar to saint martin
 
   @Column({
-    select: false
+    select: false,
   })
   optionSelectorIdLeavingFrom: string;
 
   @Column({
-    select: false
+    select: false,
   })
   optionSelectorIdGoingTo: string;
 
   @Column({
-    select: false
+    select: false,
   })
   viewSeatSelector: string;
 

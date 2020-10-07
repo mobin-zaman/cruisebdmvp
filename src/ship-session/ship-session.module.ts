@@ -10,7 +10,7 @@ import { Ship } from './ship.entity';
  */
 @Module({
   imports: [TypeOrmModule.forFeature([Ship])],
-  providers:[ ShipSessionService],
-  exports: [ShipSessionService]
+  providers: [ShipSessionService],
+  exports: [ShipSessionService],
 })
 export class ShipSessionModule {}

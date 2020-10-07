@@ -1,4 +1,5 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Ship } from './ship.entity';
 
 @Entity()
 /**
@@ -15,4 +16,12 @@ export class SeatCategory extends BaseEntity {
 
   @Column()
   categoryButtonSelector: string;
+
+  @ManyToOne(
+    type => Ship,
+    ship => ship.destinations,
+    { eager: false },
+  )
+  ship: Ship;
+
 }
