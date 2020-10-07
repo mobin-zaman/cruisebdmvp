@@ -20,7 +20,7 @@ export class SeatCategory extends BaseEntity {
   @ManyToOne(
     type => Ship,
     ship => ship.destinations,
-    { eager: false },
+    { eager: false , nullable: false},
   )
   ship: Ship;
 
