@@ -17,13 +17,19 @@ export class Routes extends BaseEntity {
   @Column()
   routeName: string; //example: cox's bazaar to saint martin
 
-  @Column()
+  @Column({
+    select: false
+  })
   optionSelectorIdLeavingFrom: string;
 
-  @Column()
+  @Column({
+    select: false
+  })
   optionSelectorIdGoingTo: string;
 
-  @Column()
+  @Column({
+    select: false
+  })
   viewSeatSelector: string;
 
   //TODO: find out what eager:false do
