@@ -6,6 +6,10 @@ export class BookingService {
   constructor(private shipSessionService: ShipSessionService) {}
 
   async getShips() {
-    return this.shipSessionService.getAllShip()
+    return this.shipSessionService.getAllShip();
+  }
+
+  async getShipCategory() {
+
   }
 }

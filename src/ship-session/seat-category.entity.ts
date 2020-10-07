@@ -1,4 +1,10 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Ship } from './ship.entity';
 
 @Entity()
@@ -19,9 +25,8 @@ export class SeatCategory extends BaseEntity {
 
   @ManyToOne(
     type => Ship,
-    ship => ship.destinations,
-    { eager: false , nullable: false},
+    ship => ship.routes,
+    { eager: false, nullable: false },
   )
   ship: Ship;
-
 }
