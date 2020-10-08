@@ -16,8 +16,6 @@ export class ShipIdCategoryIdValidationPipe implements PipeTransform {
     value: GetSeatCategoryInfoDto,
     metadata: ArgumentMetadata,
   ): Promise<any> {
-    console.log('getting the value: ', value);
-
     /**
      * This is a callback function to check categoryId validity
      * works with seatCategories.some()
