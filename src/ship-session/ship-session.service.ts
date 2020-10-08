@@ -4,7 +4,7 @@ import { Ship } from './ship.entity';
 import { Repository } from 'typeorm';
 import { GetSeatCategoryInfoDto } from '../booking/dto/get-seat-category-info.dto';
 import { SeatCategory } from './seat-category.entity';
-import { ScrappingService } from './ship-srapper';
+import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 
 @Injectable()
 export class ShipSessionService {
@@ -13,6 +13,7 @@ export class ShipSessionService {
     private shipRepository: Repository<Ship>,
     @InjectRepository(SeatCategory)
     private seatCategoryRepository: Repository<SeatCategory>,
+    private shipScrapperPuppeteer: ShipScrapperPuppeteer
   ) {}
 
   getAllShip(): Promise<Ship[]> {
@@ -36,7 +37,6 @@ export class ShipSessionService {
     const ship = await category.ship;
     console.log('this is the category: ', category);
 
-    const scrapper = await ScrappingService.build();
-    await scrapper.login(ship.shipAdminPageUrl, ship.username, ship.password);
+    await this.shipScrapperPuppeteer.getSeatCategoryInformation(ship,category);
   }
 }

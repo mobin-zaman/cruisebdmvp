@@ -3,6 +3,7 @@ import { ShipSessionService } from './ship-session.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ship } from './ship.entity';
 import { SeatCategory } from './seat-category.entity';
+import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 
 /**
  * This module is going to be responsible for
@@ -11,7 +12,7 @@ import { SeatCategory } from './seat-category.entity';
  */
 @Module({
   imports: [TypeOrmModule.forFeature([Ship, SeatCategory])],
-  providers: [ShipSessionService],
+  providers: [ShipSessionService, ShipScrapperPuppeteer],
   exports: [ShipSessionService],
 })
 export class ShipSessionModule {}
