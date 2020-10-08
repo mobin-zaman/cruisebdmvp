@@ -3,12 +3,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Ship } from './ship.entity';
 import { Repository } from 'typeorm';
 import { GetSeatCategoryInfoDto } from '../booking/dto/get-seat-category-info.dto';
+import { SeatCategory } from './seat-category.entity';
+import { ScrappingService} from './ship-srapper.service';
 
 @Injectable()
 export class ShipSessionService {
   constructor(
     @InjectRepository(Ship)
     private shipRepository: Repository<Ship>,
+    @InjectRepository(SeatCategory)private seatCategoryRepository: Repository<SeatCategory>,
   ) {}
 
   getAllShip(): Promise<Ship[]> {
@@ -26,6 +29,19 @@ export class ShipSessionService {
   async getSeatCategoryInformation(
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
-    console.log('This is the seat catefory infor', getSeatCategoryInfoDto);
+    // console.log('This is the seat catefory infolr', getSeatCategoryInfoDto);
+    const {categoryId} = await getSeatCategoryInfoDto;
+
+    const category = await this.seatCategoryRepository.findOne(categoryId);
+
+    const scrapper = await ScrappingService.build();
+
+    console.log("scrapper: ", scrapper);
+
+
+
+
+
+
   }
 }

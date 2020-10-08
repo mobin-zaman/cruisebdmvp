@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ShipSessionService } from './ship-session.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ship } from './ship.entity';
+import { SeatCategory } from './seat-category.entity';
 
 /**
  * This module is going to be responsible for
@@ -9,7 +10,7 @@ import { Ship } from './ship.entity';
  * 2.Running the scraping session
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Ship])],
+  imports: [TypeOrmModule.forFeature([Ship, SeatCategory])],
   providers: [ShipSessionService],
   exports: [ShipSessionService],
 })
