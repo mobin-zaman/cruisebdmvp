@@ -5,4 +5,6 @@ export class GetSeatCategoryInfoDto {
   shipId: number;
   @IsNotEmpty()
   categoryId: number;
+  @IsNotEmpty()
+  routeId: number;
 }

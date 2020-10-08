@@ -13,7 +13,7 @@ export class ShipSessionService {
     private shipRepository: Repository<Ship>,
     @InjectRepository(SeatCategory)
     private seatCategoryRepository: Repository<SeatCategory>,
-    private shipScrapperPuppeteer: ShipScrapperPuppeteer
+    private shipScrapperPuppeteer: ShipScrapperPuppeteer,
   ) {}
 
   getAllShip(): Promise<Ship[]> {
@@ -28,6 +28,13 @@ export class ShipSessionService {
     return await ships.seatCategories;
   }
 
+  async getRoutes(id) {
+    const ship: Ship = await this.shipRepository.findOne(id);
+    if (!ship) throw Error('Ship not found');
+
+    return ship.routes;
+  }
+
   async getSeatCategoryInformation(
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
@@ -37,6 +44,6 @@ export class ShipSessionService {
     const ship = await category.ship;
     console.log('this is the category: ', category);
 
-    await this.shipScrapperPuppeteer.getSeatCategoryInformation(ship,category);
+    await this.shipScrapperPuppeteer.getSeatCategoryInformation(ship, category);
   }
 }
