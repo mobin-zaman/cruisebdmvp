@@ -40,7 +40,7 @@ export class ShipIdCategoryIdValidationPipe implements PipeTransform {
         );
       }
     } catch (e) {
-      console.log("Error validating seat categories: ",e);
+      console.log('Error validating seat categories: ', e);
       if (e.message === 'Ship not found')
         throw new BadRequestException(
           `There is no ship with id: ${value.shipId}`,

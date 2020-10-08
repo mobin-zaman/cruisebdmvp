@@ -30,5 +30,5 @@ export class SeatCategory extends BaseEntity {
     ship => ship.routes,
     { eager: false, nullable: false },
   )
-  ship: Ship;
+  ship: Promise<Ship>;
 }
