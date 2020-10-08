@@ -35,7 +35,8 @@ export class BookingController {
   @Get('/ships/:shipId/seat_category/:categoryId')
   @UseInterceptors(TransformInterceptor)
   getSeatCategoryInformation(
-    @Param(ShipIdCategoryIdValidationPipe) getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
+    @Param(ShipIdCategoryIdValidationPipe)
+    getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
     return this.bookingService.getSeatCategoryInformation(
       getSeatCategoryInfoDto,
