@@ -36,5 +36,5 @@ export class Routes extends BaseEntity {
     ship => ship.routes,
     { eager: false },
   )
-  ship: Ship;
+  ship: Promise<Ship>;
 }

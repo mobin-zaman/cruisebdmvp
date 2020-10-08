@@ -7,6 +7,7 @@ import {
 import { ShipSessionService } from '../../ship-session/ship-session.service';
 import { SeatCategory } from '../../ship-session/seat-category.entity';
 import { GetSeatCategoryInfoDto } from '../dto/get-seat-category-info.dto';
+import { Routes } from '../../ship-session/routes.entity';
 
 @Injectable()
 export class ShipIdCategoryIdValidationPipe implements PipeTransform {
@@ -23,8 +24,13 @@ export class ShipIdCategoryIdValidationPipe implements PipeTransform {
      * that's why the type casting needed to be performed
      * @param obj
      */
+    console.log('value: ', value);
     const checkCategoryId = obj => {
       return obj.id.toString() === value.categoryId;
+    };
+
+    const checkRouteId = obj => {
+      return obj.id.toString() === value.routeId;
     };
 
     try {
@@ -35,6 +41,14 @@ export class ShipIdCategoryIdValidationPipe implements PipeTransform {
       if (!seatCategories.some(checkCategoryId)) {
         throw new BadRequestException(
           `There is no seat category for ${value.categoryId} on this ship`,
+        );
+      }
+
+      const routes: Routes[] = await this.shipService.getRoutes(value.shipId);
+
+      if (!routes.some(checkRouteId)) {
+        throw new BadRequestException(
+          `There is no route for ${value.routeId} on this ship`,
         );
       }
     } catch (e) {

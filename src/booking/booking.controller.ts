@@ -1,8 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Post,
   UseInterceptors,
+  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { BookingService } from './booking.service';
@@ -32,10 +35,11 @@ export class BookingController {
     return this.bookingService.getSeatCategories(shipId);
   }
 
-  @Get('/ships/:shipId/seat_category/:categoryId')
+  @Post('/seat-status/')
+  @UsePipes(ValidationPipe) //it is added to class-tranformer package to work
   @UseInterceptors(TransformInterceptor)
   getSeatCategoryInformation(
-    @Param(ShipIdCategoryIdValidationPipe)
+    @Body(ShipIdCategoryIdValidationPipe)
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
     return this.bookingService.getSeatCategoryInformation(
