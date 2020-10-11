@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { GetSeatCategoryInfoDto } from '../booking/dto/get-seat-category-info.dto';
 import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
+import { Routes } from './routes.entity';
 
 @Injectable()
 export class ShipSessionService {
@@ -13,6 +14,8 @@ export class ShipSessionService {
     private shipRepository: Repository<Ship>,
     @InjectRepository(SeatCategory)
     private seatCategoryRepository: Repository<SeatCategory>,
+    @InjectRepository(Routes)
+    private routesRepository: Repository<Routes>,
     private shipScrapperPuppeteer: ShipScrapperPuppeteer,
   ) {}
 
@@ -38,12 +41,14 @@ export class ShipSessionService {
   async getSeatCategoryInformation(
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
-    const { categoryId } = await getSeatCategoryInfoDto;
+    const { categoryId, routeId , departureDate} = await getSeatCategoryInfoDto;
 
-    const category = await this.seatCategoryRepository.findOne(categoryId);
+    const category:SeatCategory = await this.seatCategoryRepository.findOne(categoryId);
     const ship = await category.ship;
     console.log('this is the category: ', category);
 
-    await this.shipScrapperPuppeteer.getSeatCategoryInformation(ship, category);
+    const route: Routes = await this.routesRepository.findOne(routeId);
+
+    await this.shipScrapperPuppeteer.getSeatCategoryInformation(ship, category, route,departureDate);
   }
 }
