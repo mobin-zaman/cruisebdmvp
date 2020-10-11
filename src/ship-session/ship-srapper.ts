@@ -66,6 +66,7 @@ export class ScrappingService {
   }
 
   async login(url: string, username: string, password: string) {
+
     await this.page.goto(url);
 
     await this.page.type('#username', username);
@@ -75,6 +76,7 @@ export class ScrappingService {
     const captchaImagePath = await this.screenshotDOMElement(
       CAPTCHA_IMAGE_SELECTOR,
     );
+    //TODO: add failed captcha check here
     const captchaText = await solveCaptcha(captchaImagePath);
     await this.page.type('#retypecaptcha', captchaText);
 
@@ -83,5 +85,35 @@ export class ScrappingService {
     const navigationPromise = this.page.waitForNavigation();
     await this.page.click('#LoginWidgetSubmitButton');
     await navigationPromise;
+  }
+
+  async fillUpRouteDepartureDateInfo(leavingFromOptionSelector: string, goingToOptionSelector: string, departureDate: string, viewSeatSelector: string) {
+
+    const LEAVING_FROM_SELECTOR = "#searchmenu_leavingform.select";
+    const GOING_TO_SELECTOR = "#searchmenu_goingto";
+    const SEARCH_BUTTON_SELECTOR = "#searchmenu_submitbutton";
+    const DATE_PICKER = "#searchmenu_departingon";
+
+    //Removing the readonly attribute so that we can type the date
+    //ref: https://stackoverflow.com/questions/58507589/how-to-use-this-datepicker-with-puppeteer
+    await this.page.focus(DATE_PICKER);
+    await this.page.$eval(DATE_PICKER,(e) => e.removeAttribute("readonly"));
+
+
+    //selecting the routes
+    await this.page.select(LEAVING_FROM_SELECTOR, leavingFromOptionSelector);
+    await this.page.select(GOING_TO_SELECTOR, goingToOptionSelector);
+
+    //entering the date
+    await this.page.type(DATE_PICKER, departureDate);
+
+    await this.page.click(SEARCH_BUTTON_SELECTOR);
+
+    await this.page.waitFor(50);
+
+    await this.page.click(viewSeatSelector);
+
+
+
   }
 }
