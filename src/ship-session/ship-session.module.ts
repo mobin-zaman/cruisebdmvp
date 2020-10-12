@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ship } from './ship.entity';
 import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
+import { Routes } from './routes.entity';
 
 /**
  * This module is going to be responsible for
@@ -11,7 +12,7 @@ import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
  * 2.Running the scraping session
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Ship, SeatCategory])],
+  imports: [TypeOrmModule.forFeature([Ship, SeatCategory, Routes])],
   providers: [ShipSessionService, ShipScrapperPuppeteer],
   exports: [ShipSessionService],
 })
