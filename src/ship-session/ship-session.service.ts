@@ -41,14 +41,25 @@ export class ShipSessionService {
   async getSeatCategoryInformation(
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
-    const { categoryId, routeId , departureDate} = await getSeatCategoryInfoDto;
+    const {
+      seatCategoryId,
+      routeId,
+      departureDate,
+    } = await getSeatCategoryInfoDto;
 
-    const category:SeatCategory = await this.seatCategoryRepository.findOne(categoryId);
+    const category: SeatCategory = await this.seatCategoryRepository.findOne(
+      seatCategoryId,
+    );
     const ship = await category.ship;
     console.log('this is the category: ', category);
 
     const route: Routes = await this.routesRepository.findOne(routeId);
 
-    await this.shipScrapperPuppeteer.getSeatCategoryInformation(ship, category, route,departureDate);
+    await this.shipScrapperPuppeteer.getSeatCategoryInformation(
+      ship,
+      category,
+      route,
+      departureDate,
+    );
   }
 }
