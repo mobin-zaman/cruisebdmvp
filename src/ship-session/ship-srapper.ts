@@ -100,14 +100,18 @@ export class ScrappingService {
     //Removing the readonly attribute so that we can type the date
     //ref: https://stackoverflow.com/questions/58507589/how-to-use-this-datepicker-with-puppeteer
     await this.page.focus(DATE_PICKER);
-    await this.page.$eval(DATE_PICKER, e => e.removeAttribute('readonly'));
+    await this.page.$eval(
+      DATE_PICKER,
+      (e: any, departureDate) => {
+        e.removeAttribute('readonly'); //so that the date picker is editable
+        e.value = departureDate; //filling out the date
+      },
+      departureDate,
+    );
 
     //selecting the routes
     await this.page.select(LEAVING_FROM_SELECTOR, leavingFromOptionSelector);
     await this.page.select(GOING_TO_SELECTOR, goingToOptionSelector);
-
-    //entering the date
-    await this.page.type(DATE_PICKER, departureDate);
 
     await this.page.click(SEARCH_BUTTON_SELECTOR);
 
