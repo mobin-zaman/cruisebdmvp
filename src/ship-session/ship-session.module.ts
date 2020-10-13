@@ -13,7 +13,13 @@ import { Routes } from './routes.entity';
  */
 @Module({
   imports: [TypeOrmModule.forFeature([Ship, SeatCategory, Routes])],
-  providers: [ShipSessionService, ShipScrapperPuppeteer],
-  exports: [ShipSessionService],
+  providers: [
+    ShipSessionService,
+    ShipScrapperPuppeteer,
+    Ship,
+    SeatCategory,
+    Routes,
+  ],
+  exports: [ShipSessionService, Ship, SeatCategory, Routes],
 })
 export class ShipSessionModule {}

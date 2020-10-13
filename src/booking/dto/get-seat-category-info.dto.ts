@@ -6,6 +6,7 @@ export class GetSeatCategoryInfoDto {
   seatCategoryId: number;
   @IsNotEmpty()
   routeId: number;
-  @IsOnlyDate() //yyyy-mm-dd
+  // @IsOnlyDate() //yyyy-mm-dd
+  @IsNotEmpty()
   departureDate: string;
 }

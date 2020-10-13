@@ -13,6 +13,7 @@ export function IsOnlyDate(validationOptions?: ValidationOptions) {
       },
       validator: {
         validate(value: any) {
+          //TODO: fix the date check
           const regex = /([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/;
           return typeof value === 'string' && regex.test(value);
         },
