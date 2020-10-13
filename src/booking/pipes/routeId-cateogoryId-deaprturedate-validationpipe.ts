@@ -3,13 +3,14 @@ import {
   BadRequestException,
   ArgumentMetadata,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { SeatCategory } from '../../ship-session/seat-category.entity';
 import { GetSeatCategoryInfoDto } from '../dto/get-seat-category-info.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Routes } from '../../ship-session/routes.entity';
-import _ from 'lodash';
+import * as _ from 'lodash';
 
 @Injectable()
 export class RouteIdCategoryIdDepartureDateValidationPipe
@@ -35,10 +36,17 @@ export class RouteIdCategoryIdDepartureDateValidationPipe
 
     const { seatCategoryId, routeId, departureDate } = value;
 
+    //TODO: departure date validation needs to be added
+
     const seatCategory: SeatCategory = await this.seatCategoryRepository.findOne(
       seatCategoryId,
     );
+
     const route: Routes = await this.routeRepository.findOne(routeId);
+
+    if (!seatCategory || !route) {
+      throw new NotFoundException('No such seat category or route exists');
+    }
 
     const shipFromSeatCategory = await seatCategory.ship;
     const shipFromRoute = await route.ship;
