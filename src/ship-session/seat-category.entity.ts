@@ -25,6 +25,10 @@ export class SeatCategory extends BaseEntity {
   @Column()
   categoryButtonSelector: string;
 
+  @Exclude()
+  @Column()
+  categoryLayOutSelector: string;
+
   @ManyToOne(
     type => Ship,
     ship => ship.routes,

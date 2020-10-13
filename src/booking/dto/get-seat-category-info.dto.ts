@@ -3,8 +3,6 @@ import { IsOnlyDate } from '../custom-class-validator-decorator/custom-date-vali
 
 export class GetSeatCategoryInfoDto {
   @IsNotEmpty()
-  seatCategoryId: number;
-  @IsNotEmpty()
   routeId: number;
   // @IsOnlyDate() //yyyy-mm-dd
   @IsNotEmpty()

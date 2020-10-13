@@ -7,20 +7,24 @@ import { Routes } from './routes.entity';
 @Injectable()
 export class ShipScrapperPuppeteer {
   async getSeatCategoryInformation(
-    ship: Ship,
-    seatCategory: SeatCategory,
-    routes: Routes,
+    route: Routes,
     departureDate: string,
   ) {
     const scrapper = await ScrappingService.build();
 
+    const ship = await route.ship;
+
     await scrapper.login(ship.shipAdminPageUrl, ship.username, ship.password);
 
+
+
     await scrapper.fillUpRouteDepartureDateInfo(
-      routes.optionSelectorIdLeavingFrom,
-      routes.optionSelectorIdGoingTo,
+      route.optionSelectorIdLeavingFrom,
+      route.optionSelectorIdGoingTo,
       departureDate,
-      routes.viewSeatSelector,
+      route.viewSeatSelector,
     );
+
+    await scrapper.getAvailableSeatsAndLayOut(ship);
   }
 }
