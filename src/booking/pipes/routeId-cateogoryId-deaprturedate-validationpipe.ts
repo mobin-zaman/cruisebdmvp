@@ -34,29 +34,15 @@ export class RouteIdCategoryIdDepartureDateValidationPipe
      * @param obj
      */
 
-    const { seatCategoryId, routeId, departureDate } = value;
+    const { routeId, departureDate } = value;
 
     //TODO: departure date validation needs to be added
 
-    const seatCategory: SeatCategory = await this.seatCategoryRepository.findOne(
-      seatCategoryId,
-    );
 
     const route: Routes = await this.routeRepository.findOne(routeId);
 
-    if (!seatCategory || !route) {
-      throw new NotFoundException('No such seat category or route exists');
-    }
-
-    const shipFromSeatCategory = await seatCategory.ship;
-    const shipFromRoute = await route.ship;
-
-    const isShipSame: boolean = _.isEqual(shipFromRoute, shipFromSeatCategory);
-
-    if (!isShipSame) {
-      throw new BadRequestException(
-        `seatCategoryId: ${seatCategory.id} and routeId: ${route.id} combination is not valid`,
-      );
+    if (!route) {
+      throw new NotFoundException('No such route exists');
     }
 
     return value;

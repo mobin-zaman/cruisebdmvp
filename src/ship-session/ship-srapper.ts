@@ -1,7 +1,20 @@
-import { Browser, Page } from 'puppeteer';
-import * as puppeteer from 'puppeteer'; //import puppeteer from 'puppeteer' does not work
 import * as shortid from 'shortid';
 import solveCaptcha from './trucaptchasolver';
+import { Browser, Page } from 'puppeteer';
+
+/**
+ * Ref: https://github.com/puppeteer/puppeteer/issues/6214
+ */
+declare module 'puppeteer' {
+  export interface Page {
+    waitForTimeout(duration: number): Promise<void>
+  }
+}
+import * as puppeteer from 'puppeteer';
+import { SeatCategory } from './seat-category.entity';
+import { Ship } from './ship.entity'; //import puppeteer from 'puppeteer' does not work
+
+
 
 export class ScrappingService {
   private browser: Browser;
@@ -115,8 +128,33 @@ export class ScrappingService {
 
     await this.page.click(SEARCH_BUTTON_SELECTOR);
 
-    await this.page.waitFor(50);
+    await this.page.waitForTimeout(50);
 
     await this.page.click(viewSeatSelector);
   }
+
+  async getAvailableSeatsAndLayOut(ship: Ship){
+    await this.page.waitForTimeout(50);
+
+    const seatCategories: SeatCategory[] = await ship.seatCategories;
+
+
+    await this.takeScreenshotSeatLayOut(seatCategories);
+  }
+
+  /**
+   * Returns the image link
+   * @param selector
+   */
+  private async takeScreenshotSeatLayOut(seatCategories: SeatCategory[]) {
+    // const SEAT_LAYOUT_SELECTORS = ["#seatBlock_1", "#seatBlock_1","#seatBlock_1","#seatBlock_1","#seatBlock_1","#seatBlock_1"]
+    console.log("seatCategories", seatCategories);
+    // const path = await  this.screenshotDOMElement(SEAT_LAYOUT_SELECTOR);
+    // console.log("Saved path: ", path);
+
+  }
+
+  async uploadScreenshot(path: string) {}
+
+  async getAvailableSeats(selector: string) {}
 }

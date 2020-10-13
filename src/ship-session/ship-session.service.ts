@@ -42,22 +42,14 @@ export class ShipSessionService {
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
     const {
-      seatCategoryId,
       routeId,
       departureDate,
     } = await getSeatCategoryInfoDto;
 
-    const category: SeatCategory = await this.seatCategoryRepository.findOne(
-      seatCategoryId,
-    );
-    const ship = await category.ship;
-    console.log('this is the category: ', category);
 
     const route: Routes = await this.routesRepository.findOne(routeId);
 
     await this.shipScrapperPuppeteer.getSeatCategoryInformation(
-      ship,
-      category,
       route,
       departureDate,
     );
