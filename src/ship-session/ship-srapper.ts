@@ -7,14 +7,13 @@ import { Browser, Page } from 'puppeteer';
  */
 declare module 'puppeteer' {
   export interface Page {
-    waitForTimeout(duration: number): Promise<void>
+    waitForTimeout(duration: number): Promise<void>;
   }
 }
 import * as puppeteer from 'puppeteer';
 import { SeatCategory } from './seat-category.entity';
 import { Ship } from './ship.entity'; //import puppeteer from 'puppeteer' does not work
-
-
+import { uploadImage } from './image-uploader';
 
 export class ScrappingService {
   private browser: Browser;
@@ -65,15 +64,19 @@ export class ScrappingService {
     if (!rect)
       throw Error(`Could not find element that matches selector: ${selector}.`);
 
-    await this.page.screenshot({
-      path,
-      clip: {
-        x: rect.left - padding,
-        y: rect.top - padding,
-        width: rect.width + padding * 2,
-        height: rect.height + padding * 2,
-      },
-    });
+    try {
+      await this.page.screenshot({
+        path,
+        clip: {
+          x: rect.left - padding,
+          y: rect.top - padding,
+          width: rect.width + padding * 2,
+          height: rect.height + padding * 2,
+        },
+      });
+    } catch (e) {
+      console.log('Error taking screenshot', e);
+    }
 
     return path;
   }
@@ -110,7 +113,7 @@ export class ScrappingService {
     const SEARCH_BUTTON_SELECTOR = '#searchmenu_submitbutton';
     const DATE_PICKER = '#searchmenu_departingon';
 
-    //Removing the readonly attribute so that we can type the date
+    //Removing the readonly attribute so that we can enter the date
     //ref: https://stackoverflow.com/questions/58507589/how-to-use-this-datepicker-with-puppeteer
     await this.page.focus(DATE_PICKER);
     await this.page.$eval(
@@ -133,25 +136,37 @@ export class ScrappingService {
     await this.page.click(viewSeatSelector);
   }
 
-  async getAvailableSeatsAndLayOut(ship: Ship){
+  async getAvailableSeatsAndLayOut(ship: Ship) {
     await this.page.waitForTimeout(50);
 
     const seatCategories: SeatCategory[] = await ship.seatCategories;
-
 
     await this.takeScreenshotSeatLayOut(seatCategories);
   }
 
   /**
-   * Returns the image link
+   * Returns the uploaded image link
    * @param selector
    */
   private async takeScreenshotSeatLayOut(seatCategories: SeatCategory[]) {
     // const SEAT_LAYOUT_SELECTORS = ["#seatBlock_1", "#seatBlock_1","#seatBlock_1","#seatBlock_1","#seatBlock_1","#seatBlock_1"]
-    console.log("seatCategories", seatCategories);
-    // const path = await  this.screenshotDOMElement(SEAT_LAYOUT_SELECTOR);
-    // console.log("Saved path: ", path);
 
+    // console.log("seatCategories:dd ",seatCategories);
+
+    let seatCategoryImages = [];
+
+    for await (const seatCategory of seatCategories) {
+      await this.page.click(seatCategory.categoryButtonSelector);
+      let imageScreenShotPath = await this.screenshotDOMElement(
+        seatCategory.categoryLayOutSelector,
+      );
+      const url = await uploadImage(imageScreenShotPath);
+
+      seatCategoryImages.push({
+        url,
+      });
+    }
+    console.log('Finally: ', seatCategoryImages);
   }
 
   async uploadScreenshot(path: string) {}

@@ -38,7 +38,6 @@ export class RouteIdCategoryIdDepartureDateValidationPipe
 
     //TODO: departure date validation needs to be added
 
-
     const route: Routes = await this.routeRepository.findOne(routeId);
 
     if (!route) {

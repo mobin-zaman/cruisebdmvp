@@ -41,11 +41,7 @@ export class ShipSessionService {
   async getSeatCategoryInformation(
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
-    const {
-      routeId,
-      departureDate,
-    } = await getSeatCategoryInfoDto;
-
+    const { routeId, departureDate } = await getSeatCategoryInfoDto;
 
     const route: Routes = await this.routesRepository.findOne(routeId);
 
