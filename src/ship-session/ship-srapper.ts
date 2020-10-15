@@ -1,7 +1,6 @@
 import * as shortid from 'shortid';
 import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
-import * as jsonParser from 'html2json';
 
 /**
  * Ref: https://github.com/puppeteer/puppeteer/issues/6214
@@ -15,6 +14,7 @@ import * as puppeteer from 'puppeteer';
 import { SeatCategory } from './seat-category.entity';
 import { Ship } from './ship.entity'; //import puppeteer from 'puppeteer' does not work
 import { uploadImage } from './image-uploader';
+import { html2json } from './html2json';
 
 export class ScrappingService {
   private browser: Browser;
@@ -35,7 +35,7 @@ export class ScrappingService {
   static async build() {
     try {
       const browser: Browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
       });
 
       const page: Page = await browser.newPage();
@@ -178,19 +178,20 @@ export class ScrappingService {
     return seatCategoryImages;
   }
 
-
   async getAvailableSeats(seatCategories: SeatCategory[]) {
     // const selector = seatCategories[3].categoryLayOutSelector;
     // const selector = '#seatBlock_4';
     // console.log("selector:  ", selector);
 
-    const selector = ".overview"
-    const innerHtml = await this.page.$eval(selector, (element) => {
+    const selector = '.overview';
+    const innerHtml = await this.page.$eval(
+      selector,
+      element => {
         return element.innerHTML;
-    },selector);
+      },
+      selector,
+    );
 
-
-
-
+    const response = await html2json(innerHtml);
   }
 }
