@@ -45,7 +45,7 @@ export class ShipSessionService {
 
     const route: Routes = await this.routesRepository.findOne(routeId);
 
-    await this.shipScrapperPuppeteer.getSeatCategoryInformation(
+    return await this.shipScrapperPuppeteer.getSeatCategoryInformation(
       route,
       departureDate,
     );

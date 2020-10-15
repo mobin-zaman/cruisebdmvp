@@ -14,7 +14,7 @@ import * as puppeteer from 'puppeteer';
 import { SeatCategory } from './seat-category.entity';
 import { Ship } from './ship.entity'; //import puppeteer from 'puppeteer' does not work
 import { uploadImage } from './image-uploader';
-import { html2json } from './html2json';
+import { html2jsonExtractSeatInfo } from './html2json';
 
 export class ScrappingService {
   private browser: Browser;
@@ -142,9 +142,58 @@ export class ScrappingService {
 
     const seatCategories: SeatCategory[] = await ship.seatCategories;
 
-    // const seatCategoryImages = await this.takeScreenshotSeatLayOut(seatCategories);
+    const seatCategoryImages = await this.takeScreenshotSeatLayOut(
+      seatCategories,
+    );
 
-    await this.getAvailableSeats(seatCategories);
+    const availableSeats = await this.getAvailableSeats(seatCategories);
+    // console.log('availableSeats: ', availableSeats);
+    console.log('length: ', availableSeats.length);
+
+    return this.mergeAvailableSeatsAndLayOutImagesUrl(
+      seatCategories,
+      seatCategoryImages,
+      availableSeats,
+    );
+  }
+
+  private async mergeAvailableSeatsAndLayOutImagesUrl(
+    seatCategories: SeatCategory[],
+    seatCategoryImages,
+    availableSeats,
+  ) {
+    let mergedSeatAndLayOutImagesUrl = [];
+
+    //TODO:  optimize the performance here
+    for (const seatCategory of seatCategories) {
+      let resultantSeat = [];
+
+      for (const availableSeat of availableSeats) {
+        if (availableSeat.deck_title === seatCategory.categoryName) {
+          resultantSeat.push({
+            seatId: '11901',
+            seatName: availableSeat.display_name,
+            seatFare: availableSeat.seat_fare,
+            seatTypeTitle: availableSeat.seat_type_title,
+          });
+        }
+      }
+
+      const seatLayoutImageUrl = seatCategoryImages.find(x => x.id === seatCategory.id).categorySeatLayoutImageUrl;
+
+      console.log("seatLayoutImageUrl: ", seatLayoutImageUrl);
+
+      // const seatLayoutImageUrl =
+      mergedSeatAndLayOutImagesUrl.push({
+        seatCategoryId: seatCategory.id,
+        seatCategoryName: seatCategory.categoryName,
+
+        availableSeats: resultantSeat,
+        seatLayoutUrl: seatLayoutImageUrl
+      });
+    }
+
+    return mergedSeatAndLayOutImagesUrl;
   }
 
   /**
@@ -152,10 +201,6 @@ export class ScrappingService {
    * @param selector
    */
   private async takeScreenshotSeatLayOut(seatCategories: SeatCategory[]) {
-    // const SEAT_LAYOUT_SELECTORS = ["#seatBlock_1", "#seatBlock_1","#seatBlock_1","#seatBlock_1","#seatBlock_1","#seatBlock_1"]
-
-    // console.log("seatCategories:dd ",seatCategories);
-
     let seatCategoryImages = [];
 
     //TODO: need to add documentation here
@@ -178,11 +223,7 @@ export class ScrappingService {
     return seatCategoryImages;
   }
 
-  async getAvailableSeats(seatCategories: SeatCategory[]) {
-    // const selector = seatCategories[3].categoryLayOutSelector;
-    // const selector = '#seatBlock_4';
-    // console.log("selector:  ", selector);
-
+  private async getAvailableSeats(seatCategories: SeatCategory[]) {
     const selector = '.overview';
     const innerHtml = await this.page.$eval(
       selector,
@@ -192,6 +233,28 @@ export class ScrappingService {
       selector,
     );
 
-    const response = await html2json(innerHtml);
+    const seats = await html2jsonExtractSeatInfo(innerHtml);
+
+    return this.processSeatsJsonInfo(seats);
+  }
+
+  private processSeatsJsonInfo(seats) {
+    //TODO: add example here
+
+    // const availableSeats = seats.reduce((result, element) => {
+    //   if(element.attr.status === 'available') {
+    //     result.push(element);
+    //     return result;
+    //   }
+    // }, []);
+
+    let availableSeats = [];
+    for (const seat of seats) {
+      if (seat.attr.status === 'available') {
+        availableSeats.push(seat.attr);
+      }
+    }
+
+    return availableSeats;
   }
 }

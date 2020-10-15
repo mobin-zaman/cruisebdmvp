@@ -20,6 +20,6 @@ export class ShipScrapperPuppeteer {
       route.viewSeatSelector,
     );
 
-    await scrapper.getAvailableSeatsAndLayOut(ship);
+    return await scrapper.getAvailableSeatsAndLayOut(ship);
   }
 }
