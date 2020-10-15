@@ -1,6 +1,7 @@
 import * as shortid from 'shortid';
 import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
+import * as jsonParser from 'html2json';
 
 /**
  * Ref: https://github.com/puppeteer/puppeteer/issues/6214
@@ -141,7 +142,9 @@ export class ScrappingService {
 
     const seatCategories: SeatCategory[] = await ship.seatCategories;
 
-    const seatCategoryImages = await this.takeScreenshotSeatLayOut(seatCategories);
+    // const seatCategoryImages = await this.takeScreenshotSeatLayOut(seatCategories);
+
+    await this.getAvailableSeats(seatCategories);
   }
 
   /**
@@ -176,7 +179,18 @@ export class ScrappingService {
   }
 
 
-  async getAvailableSeats() {
+  async getAvailableSeats(seatCategories: SeatCategory[]) {
+    // const selector = seatCategories[3].categoryLayOutSelector;
+    // const selector = '#seatBlock_4';
+    // console.log("selector:  ", selector);
+
+    const selector = ".overview"
+    const innerHtml = await this.page.$eval(selector, (element) => {
+        return element.innerHTML;
+    },selector);
+
+
+
 
   }
 }
