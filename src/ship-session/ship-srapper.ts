@@ -141,7 +141,7 @@ export class ScrappingService {
 
     const seatCategories: SeatCategory[] = await ship.seatCategories;
 
-    await this.takeScreenshotSeatLayOut(seatCategories);
+    const seatCategoryImages = await this.takeScreenshotSeatLayOut(seatCategories);
   }
 
   /**
@@ -155,21 +155,28 @@ export class ScrappingService {
 
     let seatCategoryImages = [];
 
+    //TODO: need to add documentation here
     for await (const seatCategory of seatCategories) {
       await this.page.click(seatCategory.categoryButtonSelector);
+
       let imageScreenShotPath = await this.screenshotDOMElement(
         seatCategory.categoryLayOutSelector,
       );
-      const url = await uploadImage(imageScreenShotPath);
+
+      const categorySeatLayoutImageUrl = await uploadImage(imageScreenShotPath);
 
       seatCategoryImages.push({
-        url,
+        id: seatCategory.id,
+        categoryName: seatCategory.categoryName,
+        categorySeatLayoutImageUrl,
       });
     }
     console.log('Finally: ', seatCategoryImages);
+    return seatCategoryImages;
   }
 
-  async uploadScreenshot(path: string) {}
 
-  async getAvailableSeats(selector: string) {}
+  async getAvailableSeats() {
+
+  }
 }
