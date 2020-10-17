@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config';
 export async function uploadImage(path: string) {
   const configService = new ConfigService();
 
-  const apiKey = configService.get('IMGBB_API_KEY');
+  const apiKey = configService.get('IMAGE_BB_API_KEY');
 
   try {
     const imageBBResponse = await imgbbUploader(apiKey, path);
