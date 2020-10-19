@@ -257,4 +257,9 @@ export class ScrappingService {
 
     return availableSeats;
   }
+
+  async browserClose() {
+    await this.browser.close();
+    console.log("Browser is closed");
+  }
 }

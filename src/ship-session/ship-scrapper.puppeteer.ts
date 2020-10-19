@@ -8,6 +8,7 @@ import { Routes } from './routes.entity';
 export class ShipScrapperPuppeteer {
   async getSeatCategoryInformation(route: Routes, departureDate: string) {
     const scrapper = await ScrappingService.build();
+    try{
 
     const ship = await route.ship;
 
@@ -21,5 +22,11 @@ export class ShipScrapperPuppeteer {
     );
 
     return await scrapper.getAvailableSeatsAndLayOut(ship);
+  } catch(e) {
+    console.log("Something went wrong when pulling the strings",e);
+    return {"message": "internal error"};
+  } finally {
+    await scrapper.browserClose();
   }
+}
 }
