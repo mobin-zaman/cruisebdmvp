@@ -171,7 +171,7 @@ export class ScrappingService {
       for (const availableSeat of availableSeats) {
         if (availableSeat.deck_title === seatCategory.categoryName) {
           resultantSeat.push({
-            seatId: '11901',
+            seatId: availableSeat.id,
             seatName: availableSeat.display_name,
             seatFare: availableSeat.seat_fare,
             seatTypeTitle: availableSeat.seat_type_title,
