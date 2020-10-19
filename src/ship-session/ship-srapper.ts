@@ -250,7 +250,7 @@ export class ScrappingService {
 
     let availableSeats = [];
     for (const seat of seats) {
-      if (seat.attr.status === 'available') {
+      if (seat.attr.status === 'available' &&  title==='Not Avalable') {
         availableSeats.push(seat.attr);
       }
     }
