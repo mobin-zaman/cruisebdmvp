@@ -1,6 +1,8 @@
 import * as imgbbUploader from 'imgbb-uploader';
 import { ConfigService } from '@nestjs/config';
 
+// ? NOTE: what about keeping images in the temp folder
+
 export async function uploadImage(path: string) {
   const configService = new ConfigService();
 
