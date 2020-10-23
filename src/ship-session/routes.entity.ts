@@ -30,6 +30,14 @@ export class Routes extends BaseEntity {
   @Column()
   viewSeatSelector: string;
 
+  @Exclude()
+  @Column()
+  boardingPoint: string;
+
+  @Exclude()
+  @Column()
+  droppingPoint: string;
+
   //TODO: find out what eager:false do
   @ManyToOne(
     type => Ship,
