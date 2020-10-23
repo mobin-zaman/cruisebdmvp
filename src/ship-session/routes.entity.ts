@@ -32,11 +32,20 @@ export class Routes extends BaseEntity {
 
   @Exclude()
   @Column()
-  boardingPoint: string;
+  boardingPointSelector: string;
 
   @Exclude()
   @Column()
-  droppingPoint: string;
+  boardingPointOption: string;
+
+  @Exclude()
+  @Column()
+  droppingPointSelector:string;
+
+
+  @Exclude()
+  @Column()
+  droppingPointOption: string;
 
   //TODO: find out what eager:false do
   @ManyToOne(

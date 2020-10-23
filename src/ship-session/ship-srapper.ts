@@ -232,6 +232,13 @@ export class ScrappingService {
     seatIds: string[],
     categoryButtonSelector: string,
     categoryLayOutSelector: string,
+
+    boardingPointSelector: string,
+    boardingPointOption: string,
+
+    droppingPointSelector: string,
+    droppingPointOption:string
+
   ) {
     //First take the seat information's form html2json api
     const availableSeats = await this.getAvailableSeats(categoryLayOutSelector);
@@ -257,6 +264,13 @@ export class ScrappingService {
       const seatSelector = '#\\3' + seatId[0] + ' ' + seatId.substring(1);
       await this.page.click(seatSelector);
     }
+
+    //now select the boarding point selector and option
+
+    await this.page.select(boardingPointSelector,boardingPointOption );
+    await this.page.select(droppingPointSelector, droppingPointOption);
+
+
   }
 
   private async getAvailableSeats(selector) {

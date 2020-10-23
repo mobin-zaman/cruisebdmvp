@@ -54,6 +54,10 @@ export class ShipScrapperPuppeteer {
         seatIds,
         seatCategory.categoryButtonSelector,
         seatCategory.categoryLayOutSelector,
+        route.boardingPointSelector,
+        route.boardingPointOption,
+        route.droppingPointSelector,
+        route.droppingPointOption
       );
     } catch (e) {
       console.log('Something went wrong when booking the seats: ', e);
