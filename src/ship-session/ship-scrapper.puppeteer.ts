@@ -40,24 +40,28 @@ export class ShipScrapperPuppeteer {
   ) {
     const scrapper = await ScrappingService.build();
 
-    try{
-    await scrapper.login(ship.shipAdminPageUrl, ship.username, ship.password);
+    try {
+      await scrapper.login(ship.shipAdminPageUrl, ship.username, ship.password);
 
-    await scrapper.fillUpRouteDepartureDateInfo(
-      route.optionSelectorIdLeavingFrom,
-      route.optionSelectorIdGoingTo,
-      departureDate,
-      route.viewSeatSelector,
-    );
+      await scrapper.fillUpRouteDepartureDateInfo(
+        route.optionSelectorIdLeavingFrom,
+        route.optionSelectorIdGoingTo,
+        departureDate,
+        route.viewSeatSelector,
+      );
 
-    await scrapper.bookSeats(seatIds, seatCategory.categoryLayOutSelector);
-
-    } catch(e) {
-      console.log("Something went wrong when booking the seats: ",e);
+      await scrapper.bookSeats(
+        seatIds,
+        seatCategory.categoryButtonSelector,
+        seatCategory.categoryLayOutSelector,
+      );
+    } catch (e) {
+      console.log('Something went wrong when booking the seats: ', e);
       throw e;
-    } finally{
-      await scrapper.browserClose();
     }
-
+    // ! TODO: add it
+    // } finally{
+    //   await scrapper.browserClose();
+    // }
   }
 }
