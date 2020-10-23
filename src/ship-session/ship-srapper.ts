@@ -146,7 +146,7 @@ export class ScrappingService {
       seatCategories,
     );
 
-    const availableSeats = await this.getAvailableSeats(seatCategories);
+    const availableSeats = await this.getAvailableSeats();
     // console.log('availableSeats: ', availableSeats);
     console.log('length: ', availableSeats.length);
 
@@ -223,7 +223,7 @@ export class ScrappingService {
     return seatCategoryImages;
   }
 
-  private async getAvailableSeats(seatCategories: SeatCategory[]) {
+  private async getAvailableSeats() {
     const selector = '.overview';
     const innerHtml = await this.page.$eval(
       selector,
