@@ -132,13 +132,13 @@ export class ScrappingService {
 
     await this.page.click(SEARCH_BUTTON_SELECTOR);
 
-    await this.page.waitForTimeout(50);
+    // await this.page.waitForTimeout(50);
 
     await this.page.click(viewSeatSelector);
   }
 
   async getAvailableSeatsAndLayOut(ship: Ship) {
-    await this.page.waitForTimeout(50);
+    // await this.page.waitForTimeout(50);
 
     const seatCategories: SeatCategory[] = await ship.seatCategories;
 

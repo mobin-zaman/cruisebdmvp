@@ -1,7 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ScrappingService } from './ship-srapper';
-import { SeatCategory } from './seat-category.entity';
-import { Ship } from './ship.entity';
 import { Routes } from './routes.entity';
 
 @Injectable()
