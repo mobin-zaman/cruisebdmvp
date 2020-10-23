@@ -146,8 +146,10 @@ export class ScrappingService {
       seatCategories,
     );
 
-    const SEAT_LAYOUT_INNERHTML_SELECTOR = ".overview"
-    const availableSeats = await this.getAvailableSeats(SEAT_LAYOUT_INNERHTML_SELECTOR);
+    const SEAT_LAYOUT_INNERHTML_SELECTOR = '.overview';
+    const availableSeats = await this.getAvailableSeats(
+      SEAT_LAYOUT_INNERHTML_SELECTOR,
+    );
     // console.log('availableSeats: ', availableSeats);
     console.log('length: ', availableSeats.length);
 
@@ -226,19 +228,35 @@ export class ScrappingService {
     return seatCategoryImages;
   }
 
-  async bookSeats(seatIds:string[], categoryLayOutSelector:string) {
-     //First take the seat information's form html2json api
-    const availableSeats = await this.getAvailableSeats(categoryLayOutSelector); 
+  async bookSeats(
+    seatIds: string[],
+    categoryButtonSelector: string,
+    categoryLayOutSelector: string,
+  ) {
+    //First take the seat information's form html2json api
+    const availableSeats = await this.getAvailableSeats(categoryLayOutSelector);
 
     //Then verify if any of the seatIds is missing from availableSeat
     //if missing that means the seat is not available
 
     seatIds.forEach(seatId => {
-      const seatFound = availableSeats.find(x => x.id === seatIds);
-      if(!seatFound) {
+      const seatFound = availableSeats.find(x => x.id === seatId);
+      if (!seatFound) {
         throw new Error(`seatId: ${seatId} is not available`);
       }
     });
+
+    //now click the category button to make seats visible
+    //so that puppeteer can interact
+
+    await this.page.click(categoryButtonSelector);
+
+    //after the validation now we are clicking the button needed for seats
+
+    for (const seatId of seatIds) {
+      const seatSelector = '#\\3' + seatId[0] + ' ' + seatId.substring(1);
+      await this.page.click(seatSelector);
+    }
   }
 
   private async getAvailableSeats(selector) {
