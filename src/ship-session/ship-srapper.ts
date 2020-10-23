@@ -35,7 +35,7 @@ export class ScrappingService {
   static async build() {
     try {
       const browser: Browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
       });
 
       const page: Page = await browser.newPage();
@@ -162,11 +162,11 @@ export class ScrappingService {
     seatCategoryImages,
     availableSeats,
   ) {
-    let mergedSeatAndLayOutImagesUrl = [];
+    const mergedSeatAndLayOutImagesUrl = [];
 
     //TODO:  optimize the performance here
     for (const seatCategory of seatCategories) {
-      let resultantSeat = [];
+      const resultantSeat = [];
 
       for (const availableSeat of availableSeats) {
         if (availableSeat.deck_title === seatCategory.categoryName) {
@@ -201,13 +201,13 @@ export class ScrappingService {
    * @param selector
    */
   private async takeScreenshotSeatLayOut(seatCategories: SeatCategory[]) {
-    let seatCategoryImages = [];
+    const seatCategoryImages = [];
 
     //TODO: need to add documentation here
     for await (const seatCategory of seatCategories) {
       await this.page.click(seatCategory.categoryButtonSelector);
 
-      let imageScreenShotPath = await this.screenshotDOMElement(
+      const imageScreenShotPath = await this.screenshotDOMElement(
         seatCategory.categoryLayOutSelector,
       );
 
@@ -248,7 +248,7 @@ export class ScrappingService {
     //   }
     // }, []);
 
-    let availableSeats = [];
+    const availableSeats = [];
     for (const seat of seats) {
       if (seat.attr.status === 'available' &&  seat.attr.title!=='Not Avalable') {
         availableSeats.push(seat.attr);
