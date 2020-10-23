@@ -179,9 +179,11 @@ export class ScrappingService {
         }
       }
 
-      const seatLayoutImageUrl = seatCategoryImages.find(x => x.id === seatCategory.id).categorySeatLayoutImageUrl;
+      const seatLayoutImageUrl = seatCategoryImages.find(
+        x => x.id === seatCategory.id,
+      ).categorySeatLayoutImageUrl;
 
-      console.log("seatLayoutImageUrl: ", seatLayoutImageUrl);
+      console.log('seatLayoutImageUrl: ', seatLayoutImageUrl);
 
       // const seatLayoutImageUrl =
       mergedSeatAndLayOutImagesUrl.push({
@@ -189,7 +191,7 @@ export class ScrappingService {
         seatCategoryName: seatCategory.categoryName,
 
         availableSeats: resultantSeat,
-        seatLayoutUrl: seatLayoutImageUrl
+        seatLayoutUrl: seatLayoutImageUrl,
       });
     }
 
@@ -250,7 +252,10 @@ export class ScrappingService {
 
     const availableSeats = [];
     for (const seat of seats) {
-      if (seat.attr.status === 'available' &&  seat.attr.title!=='Not Avalable') {
+      if (
+        seat.attr.status === 'available' &&
+        seat.attr.title !== 'Not Avalable'
+      ) {
         availableSeats.push(seat.attr);
       }
     }
@@ -260,6 +265,6 @@ export class ScrappingService {
 
   async browserClose() {
     await this.browser.close();
-    console.log("Browser is closed");
+    console.log('Browser is closed');
   }
 }

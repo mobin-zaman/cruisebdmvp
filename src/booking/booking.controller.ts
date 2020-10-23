@@ -11,7 +11,8 @@ import {
 import { BookingService } from './booking.service';
 import { TransformInterceptor } from './transform.interceptor';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
-import { RouteIdCategoryIdDepartureDateValidationPipe } from './pipes/routeId-cateogoryId-deaprturedate-validationpipe';
+import { RouteIdDepartureDateValidationPipe } from './pipes/routeId-deaprturedate-validationpipe';
+import { BookSeatDto } from './dto/book-seat.dto';
 
 @Controller('booking')
 export class BookingController {
@@ -39,7 +40,7 @@ export class BookingController {
   @UsePipes(ValidationPipe) //it is added to class-tranformer package to work
   @UseInterceptors(TransformInterceptor)
   getSeatCategoryInformation(
-    @Body(RouteIdCategoryIdDepartureDateValidationPipe)
+    @Body(RouteIdDepartureDateValidationPipe)
     getSeatCategoryInfoDto: GetSeatCategoryInfoDto,
   ) {
     return this.bookingService.getSeatCategoryInformation(
@@ -47,6 +48,9 @@ export class BookingController {
     );
   }
 
-
-  // @Post('/')
+  @Post('/seat-book/')
+  @UsePipes(ValidationPipe)
+  bookSeats(@Body() bookSeatDto: BookSeatDto) {
+    return this.bookingService.bookSeat(bookSeatDto);
+  }
 }

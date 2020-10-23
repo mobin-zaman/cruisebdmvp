@@ -6,6 +6,7 @@ import { GetSeatCategoryInfoDto } from '../booking/dto/get-seat-category-info.dt
 import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 import { Routes } from './routes.entity';
+import { BookSeatDto } from 'src/booking/dto/book-seat.dto';
 
 @Injectable()
 export class ShipSessionService {
@@ -45,8 +46,31 @@ export class ShipSessionService {
 
     const route: Routes = await this.routesRepository.findOne(routeId);
 
+    const ship: Ship = await route.ship;
+
     return await this.shipScrapperPuppeteer.getSeatCategoryInformation(
+      ship,
       route,
+      departureDate,
+    );
+  }
+
+  async bookSeats(bookSeatDto: BookSeatDto) {
+    const { routeId, seatCategoryId, seatIds, departureDate } = bookSeatDto;
+
+    const route: Routes = await this.routesRepository.findOne(routeId);
+
+    const seatCategory: SeatCategory = await this.seatCategoryRepository.findOne(
+      seatCategoryId,
+    );
+
+    const ship: Ship = await route.ship;
+
+    return await this.shipScrapperPuppeteer.bookSeats(
+      ship,
+      route,
+      seatCategory,
+      seatIds,
       departureDate,
     );
   }

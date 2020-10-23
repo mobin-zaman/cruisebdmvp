@@ -1,6 +1,5 @@
 import {
   PipeTransform,
-  BadRequestException,
   ArgumentMetadata,
   Injectable,
   NotFoundException,
@@ -10,11 +9,10 @@ import { GetSeatCategoryInfoDto } from '../dto/get-seat-category-info.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Routes } from '../../ship-session/routes.entity';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 
 @Injectable()
-export class RouteIdCategoryIdDepartureDateValidationPipe
-  implements PipeTransform {
+export class RouteIdDepartureDateValidationPipe implements PipeTransform {
   constructor(
     @InjectRepository(SeatCategory)
     private seatCategoryRepository: Repository<SeatCategory>,

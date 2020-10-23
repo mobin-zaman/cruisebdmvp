@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ShipSessionService } from '../ship-session/ship-session.service';
+import { BookSeatDto } from './dto/book-seat.dto';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
 
 @Injectable()
@@ -28,6 +29,14 @@ export class BookingService {
       );
     } catch (e) {
       console.log('Error getting ship category information: ', e);
+    }
+  }
+
+  async bookSeat(bookSeatDto: BookSeatDto) {
+    try {
+      return await this.shipSessionService.bookSeats(bookSeatDto);
+    } catch (e) {
+      console.log('Error booking seat: ', e);
     }
   }
 }
