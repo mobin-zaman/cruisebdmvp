@@ -49,6 +49,7 @@ export class ShipScrapperPuppeteer {
       departureDate,
       route.viewSeatSelector,
     );
+
     } catch(e) {
       console.log("Something went wrong when booking the seats: ",e);
     } finally{

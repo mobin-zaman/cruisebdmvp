@@ -146,7 +146,8 @@ export class ScrappingService {
       seatCategories,
     );
 
-    const availableSeats = await this.getAvailableSeats();
+    const SEAT_LAYOUT_INNERHTML_SELECTOR = ".overview"
+    const availableSeats = await this.getAvailableSeats(SEAT_LAYOUT_INNERHTML_SELECTOR);
     // console.log('availableSeats: ', availableSeats);
     console.log('length: ', availableSeats.length);
 
@@ -225,8 +226,14 @@ export class ScrappingService {
     return seatCategoryImages;
   }
 
-  private async getAvailableSeats() {
-    const selector = '.overview';
+  async bookSeats(seatIds:string[], categoryButtonSelector:string, categoryLayOutSelector:string) {
+     //First take the seat informations form html2json api
+    
+
+  }
+
+  private async getAvailableSeats(selector) {
+    // const selector = '.overview';
     const innerHtml = await this.page.$eval(
       selector,
       element => {
