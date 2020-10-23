@@ -17,6 +17,10 @@ export class BookSeatDto {
   departureDate: string;
 
   @IsNotEmpty()
+  customerName: string;
+
+
+  @IsNotEmpty()
   @IsBangladeshPhoneNumber()
   phoneNumber: string;
 }

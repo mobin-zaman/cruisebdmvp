@@ -237,7 +237,10 @@ export class ScrappingService {
     boardingPointOption: string,
 
     droppingPointSelector: string,
-    droppingPointOption:string
+    droppingPointOption:string,
+
+    customerName: string,
+    phoneNumber: string,
 
   ) {
     //First take the seat information's form html2json api
@@ -269,6 +272,14 @@ export class ScrappingService {
 
     await this.page.select(boardingPointSelector,boardingPointOption );
     await this.page.select(droppingPointSelector, droppingPointOption);
+
+    //and fill up the customer name and phone number
+
+    const customerNameSelector = "#buyer_name_3c3a9331c329e0d90398d19675e71f36";
+    const mobileNumberSelector = "#mobile_number_3c3a9331c329e0d90398d19675e71f36";
+
+    await this.page.type(customerNameSelector, customerName);
+    await this.page.type(mobileNumberSelector, phoneNumber);
 
 
   }
