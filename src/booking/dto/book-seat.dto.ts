@@ -1,4 +1,5 @@
 import { IsNotEmpty } from 'class-validator';
+import { IsBangladeshPhoneNumber } from '../custom-class-validator-decorator/bangladesh-phone-number.validator';
 // import { IsOnlyDate } from '../custom-class-validator-decorator/custom-date-validator';
 
 export class BookSeatDto {
@@ -14,4 +15,8 @@ export class BookSeatDto {
   // @IsOnlyDate() //yyyy-mm-dd
   @IsNotEmpty()
   departureDate: string;
+
+  @IsNotEmpty()
+  @IsBangladeshPhoneNumber()
+  phoneNumber: string;
 }
