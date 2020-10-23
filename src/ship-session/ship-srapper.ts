@@ -226,10 +226,19 @@ export class ScrappingService {
     return seatCategoryImages;
   }
 
-  async bookSeats(seatIds:string[], categoryButtonSelector:string, categoryLayOutSelector:string) {
-     //First take the seat informations form html2json api
-    
+  async bookSeats(seatIds:string[], categoryLayOutSelector:string) {
+     //First take the seat information's form html2json api
+    const availableSeats = await this.getAvailableSeats(categoryLayOutSelector); 
 
+    //Then verify if any of the seatIds is missing from availableSeat
+    //if missing that means the seat is not available
+
+    seatIds.forEach(seatId => {
+      const seatFound = availableSeats.find(x => x.id === seatIds);
+      if(!seatFound) {
+        throw new Error(`seatId: ${seatId} is not available`);
+      }
+    });
   }
 
   private async getAvailableSeats(selector) {

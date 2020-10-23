@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { ShipSessionService } from '../ship-session/ship-session.service';
 import { BookSeatDto } from './dto/book-seat.dto';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
@@ -37,6 +37,7 @@ export class BookingService {
       return await this.shipSessionService.bookSeats(bookSeatDto);
     } catch (e) {
       console.log('Error booking seat: ', e);
+      throw new BadRequestException("Error booking seats", e.message);
     }
   }
 }
