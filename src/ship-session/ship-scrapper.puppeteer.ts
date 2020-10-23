@@ -50,8 +50,11 @@ export class ShipScrapperPuppeteer {
       route.viewSeatSelector,
     );
 
+    await scrapper.bookSeats(seatIds, seatCategory.categoryLayOutSelector);
+
     } catch(e) {
       console.log("Something went wrong when booking the seats: ",e);
+      throw e;
     } finally{
       await scrapper.browserClose();
     }
