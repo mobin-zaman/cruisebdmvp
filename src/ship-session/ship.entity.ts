@@ -19,6 +19,7 @@ export class Ship extends BaseEntity {
   @Column()
   shipName: string;
 
+  @Exclude()
   @Column()
   shipAdminPageUrl: string;
 

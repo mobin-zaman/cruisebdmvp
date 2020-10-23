@@ -46,4 +46,7 @@ export class BookingController {
       getSeatCategoryInfoDto,
     );
   }
+
+
+  // @Post('/')
 }
