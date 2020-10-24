@@ -35,7 +35,7 @@ export class ScrappingService {
   static async build() {
     try {
       const browser: Browser = await puppeteer.launch({
-        headless: false,
+        headless: true,
       });
 
       const page: Page = await browser.newPage();
@@ -239,8 +239,13 @@ export class ScrappingService {
     droppingPointSelector: string,
     droppingPointOption:string,
 
+    customerNameSelector:string,
     customerName: string,
-    phoneNumber: string,
+
+    mobileNumberSelector: string,
+    mobileNumber: string,
+
+    purchaseButtonSelector: string
 
   ) {
     //First take the seat information's form html2json api
@@ -275,11 +280,45 @@ export class ScrappingService {
 
     //and fill up the customer name and phone number
 
-    const customerNameSelector = "#buyer_name_3c3a9331c329e0d90398d19675e71f36";
-    const mobileNumberSelector = "#mobile_number_3c3a9331c329e0d90398d19675e71f36";
+    // const customerNameSelector = "#buyer_name_3c3a9331c329e0d90398d19675e71f36";
+    // const mobileNumberSelector = "#mobile_number_3c3a9331c329e0d90398d19675e71f36";
 
     await this.page.type(customerNameSelector, customerName);
-    await this.page.type(mobileNumberSelector, phoneNumber);
+    await this.page.type(mobileNumberSelector, mobileNumber);
+
+    await this.page.click(purchaseButtonSelector)
+
+    const ticketUrl = await this.saveAndUploadTicket(); 
+
+    return ticketUrl;
+
+  }
+
+  private async saveAndUploadTicket() {
+
+    const LASER_PRINTER_SELECTOR= "#laser_printer";
+    // const PRINT_POP_UP_BUTTON = "#print_tkt";
+
+    //wait for the ticket window to load
+
+    await this.page.waitForSelector(LASER_PRINTER_SELECTOR);
+    // await this.page.click(LASER_PRINTER_SELECTOR);
+
+    //now print the pdf window
+    // await this.page.click(PRINT_POP_UP_BUTTON);
+
+    const TICKET_DIV_SELECTOR = "#ticket_content";
+
+    // const SAVE_TICKET_DIR = `${process.cwd()}/ticket_pdfs/`;
+    // const path = `${SAVE_TICKET_DIR}${shortid.generate()}.pdf`;
+
+    const ticketScreenshotPath = await this.screenshotDOMElement(TICKET_DIV_SELECTOR);
+    const ticketImageUrl = await uploadImage(ticketScreenshotPath);
+
+    return {
+      ticket: ticketImageUrl
+    }
+
 
 
   }

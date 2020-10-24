@@ -38,7 +38,7 @@ export class ShipScrapperPuppeteer {
     seatIds: string[],
     departureDate: string,
     customerName: string,
-    phoneNumber:string
+    mobileNumber:string
   ) {
     const scrapper = await ScrappingService.build();
 
@@ -52,7 +52,7 @@ export class ShipScrapperPuppeteer {
         route.viewSeatSelector,
       );
 
-      await scrapper.bookSeats(
+      const ticketUrl = await scrapper.bookSeats(
         seatIds,
         seatCategory.categoryButtonSelector,
         seatCategory.categoryLayOutSelector,
@@ -60,16 +60,21 @@ export class ShipScrapperPuppeteer {
         route.boardingPointOption,
         route.droppingPointSelector,
         route.droppingPointOption,
+        route.customerNameSelector,
         customerName,
-        phoneNumber
+        route.mobileNumberSelector,
+        mobileNumber,
+        route.purchaseButtonSelector
       );
+
+      return ticketUrl;
     } catch (e) {
       console.log('Something went wrong when booking the seats: ', e);
       throw e;
     }
     // ! TODO: add it
-    // } finally{
-    //   await scrapper.browserClose();
-    // }
+     finally{
+      await scrapper.browserClose();
+    }
   }
 }
