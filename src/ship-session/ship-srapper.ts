@@ -286,11 +286,15 @@ export class ScrappingService {
     await this.page.type(customerNameSelector, customerName);
     await this.page.type(mobileNumberSelector, mobileNumber);
 
-    await this.page.click(purchaseButtonSelector)
+    return {
+      okay: "done"
+    }
 
-    const ticketUrl = await this.saveAndUploadTicket(); 
+    // await this.page.click(purchaseButtonSelector)
 
-    return ticketUrl;
+    // const ticketUrl = await this.saveAndUploadTicket(); 
+
+    // return ticketUrl;
 
   }
 
