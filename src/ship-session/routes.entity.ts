@@ -47,6 +47,19 @@ export class Routes extends BaseEntity {
   @Column()
   droppingPointOption: string;
 
+  @Exclude()
+  @Column()
+  customerNameSelector: string;
+
+  @Exclude()
+  @Column()
+  mobileNumberSelector: string;
+
+  @Exclude()
+  @Column()
+  purchaseButtonSelector: string;
+
+
   //TODO: find out what eager:false do
   @ManyToOne(
     type => Ship,

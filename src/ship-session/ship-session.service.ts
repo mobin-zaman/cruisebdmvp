@@ -56,7 +56,7 @@ export class ShipSessionService {
   }
 
   async bookSeats(bookSeatDto: BookSeatDto) {
-    const { routeId, seatCategoryId, seatIds, departureDate, customerName, phoneNumber} = bookSeatDto;
+    const { routeId, seatCategoryId, seatIds, departureDate, customerName, mobileNumber} = bookSeatDto;
 
     const route: Routes = await this.routesRepository.findOne(routeId);
 
@@ -73,7 +73,7 @@ export class ShipSessionService {
       seatIds,
       departureDate,
       customerName,
-      phoneNumber
+      mobileNumber
     );
   }
 }
