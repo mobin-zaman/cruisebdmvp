@@ -1,4 +1,4 @@
-import * as shortid from 'shortid';
+import {nanoid} from 'nanoid';
 import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
 
@@ -34,12 +34,29 @@ export class ScrappingService {
    */
   static async build() {
     try {
-      const browser: Browser = await puppeteer.launch({
-        headless: true,
-      });
+      const launchOptions = {
+          args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage',
+            '--disable-accelerated-2d-canvas',
+            '--no-first-run',
+            '--no-zygote',
+            '--single-process', // <- this one doesn't works in Windows
+            '--disable-gpu'
+          ],
+          headless: true
+        }
+      const browser: Browser = await puppeteer.launch(launchOptions);
+      /**
+       * trying to optimize performane
+       * https://docs.browserless.io/blog/2019/05/03/improving-puppeteer-performance.html
+       */
 
       const page: Page = await browser.newPage();
       await page.setViewport({ width: 1920, height: 1080 });
+
+      console.log("SCRAPPER : build finished");
 
       return new ScrappingService({ browser, page });
     } catch (e) {
@@ -48,10 +65,11 @@ export class ScrappingService {
   }
 
   async screenshotDOMElement(selector) {
-    const IMAGE_DIR = `${process.cwd()}/screenshots/`; //this is the image directory
+    // const IMAGE_DIR = `${process.cwd()}/screenshots/`; //this is the image directory
+    const IMAGE_DIR = `/tmp/`;
 
     const padding = 0;
-    const path = `${IMAGE_DIR}${shortid.generate()}.png`;
+    const path = `${IMAGE_DIR}${nanoid()}.png`;
 
     if (!selector) throw Error('Please provide a selector.');
 
@@ -93,7 +111,11 @@ export class ScrappingService {
       CAPTCHA_IMAGE_SELECTOR,
     );
     //TODO: add failed captcha check here
+
+    try{
     const captchaText = await solveCaptcha(captchaImagePath);
+
+
     await this.page.type('#retypecaptcha', captchaText);
 
     //It turns out the page.waitForNavigation() was failing for the race condition. Further research needed
@@ -101,6 +123,11 @@ export class ScrappingService {
     const navigationPromise = this.page.waitForNavigation();
     await this.page.click('#LoginWidgetSubmitButton');
     await navigationPromise;
+
+    console.log("SCRAPPER: LOGIN DONE")
+    } catch(e) {
+      console.log("Error in scrapper.login: ", e);
+    }
   }
 
   async fillUpRouteDepartureDateInfo(
@@ -135,6 +162,7 @@ export class ScrappingService {
     // await this.page.waitForTimeout(50);
 
     await this.page.click(viewSeatSelector);
+    console.log("SCRAPPER: FILLING OUT DEPARTURE INFO DONE")
   }
 
   async getAvailableSeatsAndLayOut(ship: Ship) {
@@ -186,7 +214,7 @@ export class ScrappingService {
         x => x.id === seatCategory.id,
       ).categorySeatLayoutImageUrl;
 
-      console.log('seatLayoutImageUrl: ', seatLayoutImageUrl);
+      // console.log('seatLayoutImageUrl: ', seatLayoutImageUrl);
 
       // const seatLayoutImageUrl =
       mergedSeatAndLayOutImagesUrl.push({
@@ -197,7 +225,7 @@ export class ScrappingService {
         seatLayoutUrl: seatLayoutImageUrl,
       });
     }
-
+    console.log("SCRAPPER: taken available seat layouts")
     return mergedSeatAndLayOutImagesUrl;
   }
 
@@ -286,8 +314,12 @@ export class ScrappingService {
     await this.page.type(customerNameSelector, customerName);
     await this.page.type(mobileNumberSelector, mobileNumber);
 
+    // return {
+    //   okay: "done"
+    // }
+
     return {
-      okay: "done"
+      ticket: "https://i.ibb.co/h1PQzKV/b08c6da73f23.png"
     }
 
     // await this.page.click(purchaseButtonSelector)
