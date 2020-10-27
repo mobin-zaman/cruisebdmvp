@@ -10,7 +10,7 @@ export async function uploadImage(path: string) {
 
   try {
     const imageBBResponse = await imgbbUploader(apiKey, path);
-    console.log('response: ', imageBBResponse);
+    // console.log('response: ', imageBBResponse);
     return imageBBResponse.url;
   } catch (e) {
     console.log('Problem in image uploader: ', e);

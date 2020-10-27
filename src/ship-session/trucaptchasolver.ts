@@ -17,7 +17,14 @@ export default async function solveCaptcha(path) {
     data: base64str,
   };
 
-  const response = await axios.post(url, body);
+  try{
 
+  const response = await axios.post(url, body);
   return response.data.result;
+
+  } catch(e) {
+    console.log("Problem in true captcha api: ", e);
+
+  }
+
 }
