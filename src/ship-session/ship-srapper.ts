@@ -1,4 +1,4 @@
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
 
@@ -35,28 +35,28 @@ export class ScrappingService {
   static async build() {
     try {
       const launchOptions = {
-          args: [
-            '--no-sandbox',
-            '--disable-setuid-sandbox',
-            '--disable-dev-shm-usage',
-            '--disable-accelerated-2d-canvas',
-            '--no-first-run',
-            '--no-zygote',
-            '--single-process', // <- this one doesn't works in Windows
-            '--disable-gpu'
-          ],
-          headless: true
-        }
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-accelerated-2d-canvas',
+          '--no-first-run',
+          '--no-zygote',
+          '--single-process', // <- this one doesn't works in Windows
+          '--disable-gpu',
+        ],
+        headless: true,
+      };
       const browser: Browser = await puppeteer.launch(launchOptions);
       /**
        * trying to optimize performane
-       * https://docs.browserless.io/blog/2019/05/03/improving-puppeteer-performance.html
+        https://docs.browserless.io/blog/2019/05/03/improving-puppeteer-performance.html
        */
 
       const page: Page = await browser.newPage();
       await page.setViewport({ width: 1920, height: 1080 });
 
-      console.log("SCRAPPER : build finished");
+      console.log('SCRAPPER : build finished');
 
       return new ScrappingService({ browser, page });
     } catch (e) {
@@ -112,21 +112,20 @@ export class ScrappingService {
     );
     //TODO: add failed captcha check here
 
-    try{
-    const captchaText = await solveCaptcha(captchaImagePath);
+    try {
+      const captchaText = await solveCaptcha(captchaImagePath);
 
+      await this.page.type('#retypecaptcha', captchaText);
 
-    await this.page.type('#retypecaptcha', captchaText);
+      //It turns out the page.waitForNavigation() was failing for the race condition. Further research needed
+      //ref: https://github.com/puppeteer/puppeteer/issues/3338
+      const navigationPromise = this.page.waitForNavigation();
+      await this.page.click('#LoginWidgetSubmitButton');
+      await navigationPromise;
 
-    //It turns out the page.waitForNavigation() was failing for the race condition. Further research needed
-    //ref: https://github.com/puppeteer/puppeteer/issues/3338
-    const navigationPromise = this.page.waitForNavigation();
-    await this.page.click('#LoginWidgetSubmitButton');
-    await navigationPromise;
-
-    console.log("SCRAPPER: LOGIN DONE")
-    } catch(e) {
-      console.log("Error in scrapper.login: ", e);
+      console.log('SCRAPPER: LOGIN DONE');
+    } catch (e) {
+      console.log('Error in scrapper.login: ', e);
     }
   }
 
@@ -162,7 +161,7 @@ export class ScrappingService {
     // await this.page.waitForTimeout(50);
 
     await this.page.click(viewSeatSelector);
-    console.log("SCRAPPER: FILLING OUT DEPARTURE INFO DONE")
+    console.log('SCRAPPER: FILLING OUT DEPARTURE INFO DONE');
   }
 
   async getAvailableSeatsAndLayOut(ship: Ship) {
@@ -225,7 +224,7 @@ export class ScrappingService {
         seatLayoutUrl: seatLayoutImageUrl,
       });
     }
-    console.log("SCRAPPER: taken available seat layouts")
+    console.log('SCRAPPER: taken available seat layouts');
     return mergedSeatAndLayOutImagesUrl;
   }
 
@@ -265,16 +264,15 @@ export class ScrappingService {
     boardingPointOption: string,
 
     droppingPointSelector: string,
-    droppingPointOption:string,
+    droppingPointOption: string,
 
-    customerNameSelector:string,
+    customerNameSelector: string,
     customerName: string,
 
     mobileNumberSelector: string,
     mobileNumber: string,
 
-    purchaseButtonSelector: string
-
+    purchaseButtonSelector: string,
   ) {
     //First take the seat information's form html2json api
     const availableSeats = await this.getAvailableSeats(categoryLayOutSelector);
@@ -303,7 +301,7 @@ export class ScrappingService {
 
     //now select the boarding point selector and option
 
-    await this.page.select(boardingPointSelector,boardingPointOption );
+    await this.page.select(boardingPointSelector, boardingPointOption);
     await this.page.select(droppingPointSelector, droppingPointOption);
 
     //and fill up the customer name and phone number
@@ -319,20 +317,18 @@ export class ScrappingService {
     // }
 
     return {
-      ticket: "https://i.ibb.co/h1PQzKV/b08c6da73f23.png"
-    }
+      ticket: 'https://i.ibb.co/h1PQzKV/b08c6da73f23.png',
+    };
 
     // await this.page.click(purchaseButtonSelector)
 
-    // const ticketUrl = await this.saveAndUploadTicket(); 
+    // const ticketUrl = await this.saveAndUploadTicket();
 
     // return ticketUrl;
-
   }
 
   private async saveAndUploadTicket() {
-
-    const LASER_PRINTER_SELECTOR= "#laser_printer";
+    const LASER_PRINTER_SELECTOR = '#laser_printer';
     // const PRINT_POP_UP_BUTTON = "#print_tkt";
 
     //wait for the ticket window to load
@@ -343,20 +339,19 @@ export class ScrappingService {
     //now print the pdf window
     // await this.page.click(PRINT_POP_UP_BUTTON);
 
-    const TICKET_DIV_SELECTOR = "#ticket_content";
+    const TICKET_DIV_SELECTOR = '#ticket_content';
 
     // const SAVE_TICKET_DIR = `${process.cwd()}/ticket_pdfs/`;
     // const path = `${SAVE_TICKET_DIR}${shortid.generate()}.pdf`;
 
-    const ticketScreenshotPath = await this.screenshotDOMElement(TICKET_DIV_SELECTOR);
+    const ticketScreenshotPath = await this.screenshotDOMElement(
+      TICKET_DIV_SELECTOR,
+    );
     const ticketImageUrl = await uploadImage(ticketScreenshotPath);
 
     return {
-      ticket: ticketImageUrl
-    }
-
-
-
+      ticket: ticketImageUrl,
+    };
   }
 
   private async getAvailableSeats(selector) {

@@ -40,8 +40,7 @@ export class Routes extends BaseEntity {
 
   @Exclude()
   @Column()
-  droppingPointSelector:string;
-
+  droppingPointSelector: string;
 
   @Exclude()
   @Column()
@@ -58,7 +57,6 @@ export class Routes extends BaseEntity {
   @Exclude()
   @Column()
   purchaseButtonSelector: string;
-
 
   //TODO: find out what eager:false do
   @ManyToOne(

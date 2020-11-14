@@ -19,7 +19,6 @@ export class BookSeatDto {
   @IsNotEmpty()
   customerName: string;
 
-
   @IsNotEmpty()
   @IsBangladeshPhoneNumber()
   mobileNumber: string;
