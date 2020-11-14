@@ -69,7 +69,6 @@ export class ShipScrapperPuppeteer {
 
       //ticketPath is returned
       return ticket;
-
     } catch (e) {
       console.log('Something went wrong when booking the seats: ', e);
       throw e;

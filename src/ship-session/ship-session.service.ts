@@ -7,7 +7,7 @@ import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 import { Routes } from './routes.entity';
 import { BookSeatDto } from 'src/booking/dto/book-seat.dto';
-import fs from 'fs';
+import * as fs from 'fs';
 
 @Injectable()
 export class ShipSessionService {
