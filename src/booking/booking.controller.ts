@@ -62,11 +62,10 @@ export class BookingController {
 
       // prevent cache
       'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': 0,
-    })
+      Pragma: 'no-cache',
+      Expires: 0,
+    });
 
-    res.end(buffer)
-
+    res.end(buffer);
   }
 }

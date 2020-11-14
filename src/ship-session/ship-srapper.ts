@@ -66,8 +66,8 @@ export class ScrappingService {
   }
 
   async screenshotDOMElement(selector) {
-    // const IMAGE_DIR = `${process.cwd()}/screenshots/`; //this is the image directory
-    const IMAGE_DIR = `/tmp/`;
+    const IMAGE_DIR = `${process.cwd()}/screenshots/`; //this is the image directory
+    // const IMAGE_DIR = `/tmp/`;
 
     const padding = 0;
     const path = `${IMAGE_DIR}${nanoid()}.png`;

@@ -1,8 +1,8 @@
 import axios from 'axios';
-import fs from 'fs';
+import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
-import path from 'path';
+import * as path from 'path';
 
 const BASE_URL = 'https://api.html2pdf.app/v1/generate';
 
@@ -34,7 +34,7 @@ export default async function convertFromHtmlToPdf(html: string) {
 
     console.log('Filename of the pdf: ', fileName);
 
-    const TICKET_DIR = path.join(process.cwd(), 'ticket');
+    const TICKET_DIR = path.join(process.cwd(), 'tickets');
 
     const filePath = path.join(TICKET_DIR, fileName);
 
