@@ -7,6 +7,7 @@ import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 import { Routes } from './routes.entity';
 import { BookSeatDto } from 'src/booking/dto/book-seat.dto';
+import fs from 'fs';
 
 @Injectable()
 export class ShipSessionService {
@@ -73,7 +74,7 @@ export class ShipSessionService {
 
     const ship: Ship = await route.ship;
 
-    return await this.shipScrapperPuppeteer.bookSeats(
+    const result = await this.shipScrapperPuppeteer.bookSeats(
       ship,
       route,
       seatCategory,
@@ -82,5 +83,11 @@ export class ShipSessionService {
       customerName,
       mobileNumber,
     );
+
+    const { ticketPath } = result;
+
+    const buffer = fs.readFileSync(ticketPath);
+
+    return buffer;
   }
 }

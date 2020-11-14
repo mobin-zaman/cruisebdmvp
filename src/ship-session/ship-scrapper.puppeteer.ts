@@ -52,7 +52,7 @@ export class ShipScrapperPuppeteer {
         route.viewSeatSelector,
       );
 
-      const ticketUrl = await scrapper.bookSeats(
+      const ticket = await scrapper.bookSeats(
         seatIds,
         seatCategory.categoryButtonSelector,
         seatCategory.categoryLayOutSelector,
@@ -67,7 +67,9 @@ export class ShipScrapperPuppeteer {
         route.purchaseButtonSelector,
       );
 
-      return ticketUrl;
+      //ticketPath is returned
+      return ticket;
+
     } catch (e) {
       console.log('Something went wrong when booking the seats: ', e);
       throw e;

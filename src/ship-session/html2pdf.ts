@@ -2,6 +2,7 @@ import axios from 'axios';
 import fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
+import path from 'path';
 
 const BASE_URL = 'https://api.html2pdf.app/v1/generate';
 
@@ -10,7 +11,7 @@ const BASE_URL = 'https://api.html2pdf.app/v1/generate';
  * the base path is defined in this function
  * @param html
  */
-async function convertFromHtmlToPdf(html: string) {
+export default async function convertFromHtmlToPdf(html: string) {
   const configService = new ConfigService();
 
   const apiKey = configService.get('HTML_2_PDF_API_KEY');
@@ -28,14 +29,19 @@ async function convertFromHtmlToPdf(html: string) {
     const response = await axios.post(BASE_URL, data, {
       responseType: 'stream',
     });
-
     //TODO: nanoid should go into a wrapper, and it should be in a folder called util
     const fileName = `${Date.now().toString()}-${nanoid()}.pdf`;
 
-    response.data.pipe(fs.createWriteStream(fileName));
+    console.log('Filename of the pdf: ', fileName);
+
+    const TICKET_DIR = path.join(process.cwd(), 'ticket');
+
+    const filePath = path.join(TICKET_DIR, fileName);
+
+    response.data.pipe(fs.createWriteStream(filePath));
 
     // console.log("response: ", response);
-    return fileName;
+    return filePath;
   } catch (e) {
     console.log('Error: ', e);
     throw e;

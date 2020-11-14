@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Res,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -50,7 +51,22 @@ export class BookingController {
 
   @Post('/seat-book/')
   @UsePipes(ValidationPipe)
-  bookSeats(@Body() bookSeatDto: BookSeatDto) {
-    return this.bookingService.bookSeat(bookSeatDto);
+  async bookSeats(@Body() bookSeatDto: BookSeatDto, @Res() res) {
+    const buffer = await this.bookingService.bookSeat(bookSeatDto);
+
+    res.set({
+      // pdf
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename=invoice.pdf',
+      'Content-Length': buffer.length,
+
+      // prevent cache
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': 0,
+    })
+
+    res.end(buffer)
+
   }
 }

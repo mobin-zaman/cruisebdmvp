@@ -1,6 +1,7 @@
 import { nanoid } from 'nanoid';
 import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
+import convertFromHtmlToPdf from './html2pdf';
 
 /**
  * Ref: https://github.com/puppeteer/puppeteer/issues/6214
@@ -45,7 +46,7 @@ export class ScrappingService {
           '--single-process', // <- this one doesn't works in Windows
           '--disable-gpu',
         ],
-        headless: true,
+        headless: false,
       };
       const browser: Browser = await puppeteer.launch(launchOptions);
       /**
@@ -142,6 +143,7 @@ export class ScrappingService {
 
     //Removing the readonly attribute so that we can enter the date
     //ref: https://stackoverflow.com/questions/58507589/how-to-use-this-datepicker-with-puppeteer
+    await this.page.waitForSelector(DATE_PICKER);
     await this.page.focus(DATE_PICKER);
     await this.page.$eval(
       DATE_PICKER,
@@ -316,41 +318,35 @@ export class ScrappingService {
     //   okay: "done"
     // }
 
-    return {
-      ticket: 'https://i.ibb.co/h1PQzKV/b08c6da73f23.png',
-    };
+    await this.page.click(purchaseButtonSelector);
 
-    // await this.page.click(purchaseButtonSelector)
-
-    // const ticketUrl = await this.saveAndUploadTicket();
-
-    // return ticketUrl;
+    // saveAndUploadTicket takes care of the conversion and returning the filePath of the ticket
+    return await this.saveAndUploadTicket();
   }
 
-  private async saveAndUploadTicket() {
+  private async saveAndUploadTicket(): Promise<{ ticketPath: string }> {
     const LASER_PRINTER_SELECTOR = '#laser_printer';
     // const PRINT_POP_UP_BUTTON = "#print_tkt";
 
     //wait for the ticket window to load
 
     await this.page.waitForSelector(LASER_PRINTER_SELECTOR);
-    // await this.page.click(LASER_PRINTER_SELECTOR);
+    await this.page.click(LASER_PRINTER_SELECTOR);
 
-    //now print the pdf window
-    // await this.page.click(PRINT_POP_UP_BUTTON);
+    const TICKET_CONTENT_SELECTOR = '#print_content_laser';
 
-    const TICKET_DIV_SELECTOR = '#ticket_content';
-
-    // const SAVE_TICKET_DIR = `${process.cwd()}/ticket_pdfs/`;
-    // const path = `${SAVE_TICKET_DIR}${shortid.generate()}.pdf`;
-
-    const ticketScreenshotPath = await this.screenshotDOMElement(
-      TICKET_DIV_SELECTOR,
+    const ticketContentsHtml = await this.page.$eval(
+      TICKET_CONTENT_SELECTOR,
+      element => {
+        return element.innerHTML;
+      },
+      TICKET_CONTENT_SELECTOR,
     );
-    const ticketImageUrl = await uploadImage(ticketScreenshotPath);
+
+    const pdfPath = await convertFromHtmlToPdf(ticketContentsHtml);
 
     return {
-      ticket: ticketImageUrl,
+      ticketPath: pdfPath,
     };
   }
 
