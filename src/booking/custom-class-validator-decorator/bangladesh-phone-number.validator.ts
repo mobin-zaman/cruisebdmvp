@@ -16,17 +16,17 @@ export function IsBangladeshPhoneNumber(validationOptions?: ValidationOptions) {
       },
       validator: {
         validate(value: any) {
-            try{
-                parsePhoneNumberWithError(value,'BD');
-                return true;
-            }catch(error) {
-                if( error instanceof ParseError) {
-                    console.log(error.message);
-                    return false;
-                } else {
-                    return false;
-                }
+          try {
+            parsePhoneNumberWithError(value, 'BD');
+            return true;
+          } catch (error) {
+            if (error instanceof ParseError) {
+              console.log(error.message);
+              return false;
+            } else {
+              return false;
             }
+          }
         },
       },
     });
