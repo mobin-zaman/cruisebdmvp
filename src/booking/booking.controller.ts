@@ -65,6 +65,7 @@ export class BookingController {
 
   /**
    * Reference for returning pdf from nextjs: https://github.com/nestjs/nest/issues/1090 
+   * ! TODO: fix access rights of the tickets
    * @param res 
    * @param ticketName 
    */
@@ -82,7 +83,6 @@ export class BookingController {
 
     stream.pipe(res);
 
-    return fs.createReadStream(filePath);
     } catch(e) {
       throw new NotFoundException('ticket not found');
     }
