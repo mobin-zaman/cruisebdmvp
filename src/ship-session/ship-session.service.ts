@@ -95,9 +95,18 @@ export class ShipSessionService {
  
   async getTicket(ticketName: string) {
 
+
+
     const TICKET_DIR = path.join(process.cwd(), 'tickets');
 
     const filePath = path.join(TICKET_DIR, ticketName);
+
+    //now check if file exists
+    try{
+      await fs.promises.access(filePath);
+    } catch(e) {
+      throw e;
+    }
 
     return filePath;
   }
