@@ -2,6 +2,10 @@ import {
   Body,
   Controller,
   Get,
+  Header,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
   Param,
   Post,
   Res,
@@ -9,11 +13,13 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { Response } from 'express';
 import { BookingService } from './booking.service';
 import { TransformInterceptor } from './transform.interceptor';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
 import { RouteIdDepartureDateValidationPipe } from './pipes/routeId-deaprturedate-validationpipe';
 import { BookSeatDto } from './dto/book-seat.dto';
+import * as fs from 'fs';
 
 @Controller('booking')
 export class BookingController {
@@ -55,5 +61,30 @@ export class BookingController {
     
     return await this.bookingService.bookSeat(bookSeatDto);
 
+  }
+
+  /**
+   * Reference for returning pdf from nextjs: https://github.com/nestjs/nest/issues/1090 
+   * @param res 
+   * @param ticketName 
+   */
+
+  @Get('/ticket/:ticketName')
+  async getTicket(@Res() res: Response, @Param('ticketName') ticketName: string) {
+    try{
+    const filePath = await this.bookingService.getTicket(ticketName);
+
+    const stream = fs.createReadStream(filePath);
+
+    res.set({
+    'Content-Type': 'application/pdf',
+    });
+
+    stream.pipe(res);
+
+    return fs.createReadStream(filePath);
+    } catch(e) {
+      throw new NotFoundException('ticket not found');
+    }
   }
 }
