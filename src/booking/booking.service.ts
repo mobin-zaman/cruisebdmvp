@@ -33,6 +33,7 @@ export class BookingService {
       );
     } catch (e) {
       console.log('Error getting ship category information: ', e);
+      throw new BadRequestException('Error getting seat category information', e.message);
     }
   }
 
@@ -42,6 +43,15 @@ export class BookingService {
     } catch (e) {
       console.log('Error booking seat: ', e);
       throw new BadRequestException('Error booking seats', e.message);
+    }
+  }
+
+  async getTicket(ticketName) {
+    try {
+      return await this.shipSessionService.getTicket(ticketName);
+    } catch(e) {
+      console.log("Error getting tickets: ", e);
+      throw new BadRequestException('Error getting tickets: ', e);
     }
   }
 }

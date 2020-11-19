@@ -8,6 +8,7 @@ import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 import { Routes } from './routes.entity';
 import { BookSeatDto } from 'src/booking/dto/book-seat.dto';
 import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class ShipSessionService {
@@ -89,5 +90,15 @@ export class ShipSessionService {
     const buffer = fs.readFileSync(ticketPath);
 
     return buffer;
+  }
+
+ 
+  async getTicket(ticketName: string) {
+
+    const TICKET_DIR = path.join(process.cwd(), 'tickets');
+
+    const filePath = path.join(TICKET_DIR, ticketName);
+
+    return filePath;
   }
 }
