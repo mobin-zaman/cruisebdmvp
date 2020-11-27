@@ -1,16 +1,29 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { FirebaseModule } from 'nestjs-firebase';
+
+
+
 import { ShipSessionModule } from './ship-session/ship-session.module';
 import { Ship } from './ship-session/ship.entity';
 import { Routes } from './ship-session/routes.entity';
 import { AuthModule } from './auth/auth.module';
 import { BookingModule } from './booking/booking.module';
 import { SeatCategory } from './ship-session/seat-category.entity';
+import * as path from 'path';
 
+const firebaseConfigJsonPath: string = path.join(
+  process.cwd(),
+  'config/cruisebd-82430-firebase-adminsdk-n95ny-5fa423dba7.json'
+);
 @Module({
   imports: [
+
+    //config module is for reading .env properties
     ConfigModule.forRoot({ isGlobal: true }),
+
+    //TODO: reference for the below instantiation needs to be added
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -25,6 +38,11 @@ import { SeatCategory } from './ship-session/seat-category.entity';
         synchronize: true,
       }),
     }),
+
+    FirebaseModule.forRoot({
+      googleApplicationCredential: firebaseConfigJsonPath,
+    }),
+
     ShipSessionModule,
     AuthModule,
     BookingModule,
