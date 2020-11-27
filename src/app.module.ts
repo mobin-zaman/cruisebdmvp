@@ -3,8 +3,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FirebaseModule } from 'nestjs-firebase';
 
-
-
 import { ShipSessionModule } from './ship-session/ship-session.module';
 import { Ship } from './ship-session/ship.entity';
 import { Routes } from './ship-session/routes.entity';
@@ -20,11 +18,10 @@ import { AgentModule } from './agent/agent.module';
 
 const firebaseConfigJsonPath: string = path.join(
   process.cwd(),
-  'config/cruisebd-82430-firebase-adminsdk-n95ny-5fa423dba7.json'
+  'config/cruisebd-82430-firebase-adminsdk-n95ny-5fa423dba7.json',
 );
 @Module({
   imports: [
-
     //config module is for reading .env properties
     ConfigModule.forRoot({ isGlobal: true }),
 
