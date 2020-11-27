@@ -14,6 +14,8 @@ import { SeatCategory } from './ship-session/seat-category.entity';
 import * as path from 'path';
 import { Admin } from './auth/admin.entity';
 import { AgencyModule } from './agency/agency.module';
+import { Agency } from './agency/agency.entity';
+import { Agent } from './auth/agent.entity';
 
 const firebaseConfigJsonPath: string = path.join(
   process.cwd(),
@@ -36,7 +38,7 @@ const firebaseConfigJsonPath: string = path.join(
         username: configService.get('DATABASE_USER'),
         password: configService.get('DATABASE_PASS'),
         database: configService.get('DATABASE_NAME'),
-        entities: [Ship, Routes, SeatCategory, Admin],
+        entities: [Ship, Routes, SeatCategory, Admin, Agent, Agency],
         synchronize: true,
       }),
     }),
