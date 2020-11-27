@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FirebaseService } from './firebase.service';
 import { Repository } from 'typeorm';
