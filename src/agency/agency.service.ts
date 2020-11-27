@@ -21,4 +21,8 @@ export class AgencyService {
 
         await this.agencyRepository.save(newAgency);
     }
+
+    async getAllAgency() {
+        return await this.agencyRepository.find();
+    }
 }
