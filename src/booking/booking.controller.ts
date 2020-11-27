@@ -44,7 +44,7 @@ export class BookingController {
   }
 
   @Post('/seat-status/')
-  @UsePipes(ValidationPipe) //it is added to class-tranformer package to work
+  @UsePipes(ValidationPipe) //it is added to class-transformer package to work
   @UseInterceptors(TransformInterceptor)
   getSeatCategoryInformation(
     @Body(RouteIdDepartureDateValidationPipe)
