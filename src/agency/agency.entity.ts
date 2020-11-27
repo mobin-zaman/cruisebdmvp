@@ -9,6 +9,6 @@ export class Admin extends BaseEntity{
   @Column({
     nullable: false
   })
-  firebase_uid: string;
+  name: string;
 
 }
