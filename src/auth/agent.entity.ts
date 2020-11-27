@@ -12,5 +12,13 @@ export class Agent extends BaseEntity{
   })
   firebase_uid: string;
 
+  @Column()
+  email: string;
+
+  @Column()
+  phoneNumber:string;
+
+  
+
 
 }
