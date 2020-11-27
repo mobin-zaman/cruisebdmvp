@@ -6,23 +6,21 @@ import { AddAgencyDto } from './dto/addAgency.dto';
 
 @Injectable()
 export class AgencyService {
+  constructor(
+    @InjectRepository(Agency) private agencyRepository: Repository<Agency>,
+  ) {}
 
-    constructor(
-        @InjectRepository(Agency) private agencyRepository: Repository<Agency>
-    ){}
+  async addAgency(addAgencyDto: AddAgencyDto) {
+    const { agencyName } = addAgencyDto;
 
+    const newAgency = new Agency();
 
-    async addAgency(addAgencyDto: AddAgencyDto){
-        const {agencyName} = addAgencyDto;
+    newAgency.agencyName = agencyName;
 
-        const newAgency = new Agency();
+    await this.agencyRepository.save(newAgency);
+  }
 
-        newAgency.agencyName = agencyName;
-
-        await this.agencyRepository.save(newAgency);
-    }
-
-    async getAllAgency() {
-        return await this.agencyRepository.find();
-    }
+  async getAllAgency() {
+    return await this.agencyRepository.find();
+  }
 }

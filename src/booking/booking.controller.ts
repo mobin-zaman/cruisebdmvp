@@ -58,32 +58,32 @@ export class BookingController {
   @Post('/seat-book/')
   @UsePipes(ValidationPipe)
   async bookSeats(@Body() bookSeatDto: BookSeatDto) {
-    
     return await this.bookingService.bookSeat(bookSeatDto);
-
   }
 
   /**
-   * Reference for returning pdf from nextjs: https://github.com/nestjs/nest/issues/1090 
+   * Reference for returning pdf from nextjs: https://github.com/nestjs/nest/issues/1090
    * ! TODO: fix access rights of the tickets
-   * @param res 
-   * @param ticketName 
+   * @param res
+   * @param ticketName
    */
 
   @Get('/ticket/:ticketName')
-  async getTicket(@Res() res: Response, @Param('ticketName') ticketName: string) {
-    try{
-    const filePath = await this.bookingService.getTicket(ticketName);
+  async getTicket(
+    @Res() res: Response,
+    @Param('ticketName') ticketName: string,
+  ) {
+    try {
+      const filePath = await this.bookingService.getTicket(ticketName);
 
-    const stream = fs.createReadStream(filePath);
+      const stream = fs.createReadStream(filePath);
 
-    res.set({
-    'Content-Type': 'application/pdf',
-    });
+      res.set({
+        'Content-Type': 'application/pdf',
+      });
 
-    stream.pipe(res);
-
-    } catch(e) {
+      stream.pipe(res);
+    } catch (e) {
       throw new NotFoundException('ticket not found');
     }
   }

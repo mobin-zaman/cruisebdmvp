@@ -1,14 +1,19 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique   } from 'typeorm';
+import {
+  BaseEntity,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  Unique,
+} from 'typeorm';
 
 @Entity()
 @Unique(['firebase_uid'])
-export class Admin extends BaseEntity{
+export class Admin extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column({
-    nullable: false
+    nullable: false,
   })
   firebase_uid: string;
-
 }

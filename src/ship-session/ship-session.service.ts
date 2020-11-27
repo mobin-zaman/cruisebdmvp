@@ -92,20 +92,16 @@ export class ShipSessionService {
     return buffer;
   }
 
- 
   async getTicket(ticketName: string) {
-
-
-
     const TICKET_DIR = path.join(process.cwd(), 'tickets');
 
     const filePath = path.join(TICKET_DIR, ticketName);
 
     //now check if file exists
     // * Ref: https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists
-    try{
+    try {
       await fs.promises.access(filePath);
-    } catch(e) {
+    } catch (e) {
       throw e;
     }
 
