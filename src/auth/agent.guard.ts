@@ -5,7 +5,7 @@ import {
   InternalServerErrorException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { AgentService } from './agent.service';
+import { AgentService } from './agent.auth.service';
 import { Agent } from './agent.entity';
 
 @Injectable()
