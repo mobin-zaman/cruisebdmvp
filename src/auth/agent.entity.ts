@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique}  from 'typeorm';
+import { Agency } from 'src/agency/agency.entity';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, ManyToOne}  from 'typeorm';
 
 @Entity()
 @Unique(['firebase_uid'])
@@ -12,13 +13,22 @@ export class Agent extends BaseEntity{
   })
   firebase_uid: string;
 
-  @Column()
+  @Column({
+    nullable: false
+  })
+  name:string;
+
+  @Column({
+    nullable: false
+  })
   email: string;
 
-  @Column()
+  @Column({
+    nullable: false
+  })
   phoneNumber:string;
 
-  
-
+  @ManyToOne(type=>Agency, agency => agency.agents)  
+  agency: Agency;
 
 }
