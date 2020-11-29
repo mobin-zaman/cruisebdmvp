@@ -7,7 +7,7 @@ import { Agent } from './agent.entity';
 @Injectable()
 export class AgentService {
   constructor(
-    @InjectRepository(AgentService) private agentRepository: Repository<Agent>,
+    @InjectRepository(Agent) private agentRepository: Repository<Agent>,
     @Inject(FirebaseService) private firebaseService: FirebaseService,
   ) {}
 

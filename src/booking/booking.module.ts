@@ -6,9 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Ship } from '../ship-session/ship.entity';
 import { Routes } from '../ship-session/routes.entity';
 import { SeatCategory } from '../ship-session/seat-category.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     ShipSessionModule,
     TypeOrmModule.forFeature([Ship, Routes, SeatCategory]),
   ],
