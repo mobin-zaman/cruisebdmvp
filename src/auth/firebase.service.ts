@@ -1,3 +1,4 @@
+import generatePassword from 'generate-password';
 import { FirebaseAdmin, InjectFirebaseAdmin } from 'nestjs-firebase';
 import { Injectable } from '@nestjs/common';
 
@@ -21,5 +22,30 @@ export class FirebaseService {
 
     // console.log("Returned user: ", user);
     return user;
+  }
+
+  async createNewUser(
+    email: string,
+  ): Promise<{ uid: string; password: string }> {
+    //First check if an user exists with this email
+    try {
+      await this.firebase.auth.getUserByEmail(email);
+    } catch (error) {
+      console.log('Firebase service.createNewUser: ', error);
+      throw error;
+    }
+    const password = generatePassword.generate({
+      length: 10,
+      numbers: true,
+    });
+    //else create the user and return the uid
+    const user = await this.firebase.auth.createUser({
+      email: email,
+    });
+
+    return {
+      uid: user.uid,
+      password: password,
+    };
   }
 }

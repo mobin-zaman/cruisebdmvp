@@ -34,6 +34,11 @@ export class Agent extends BaseEntity {
   })
   phoneNumber: string;
 
+  @Column({
+    nullable: false,
+  })
+  initialPassword: string;
+
   @ManyToOne(
     type => Agency,
     agency => agency.agents,

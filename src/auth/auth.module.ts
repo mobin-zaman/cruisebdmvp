@@ -10,6 +10,6 @@ import { FirebaseService } from './firebase.service';
   imports: [TypeOrmModule.forFeature([Admin])],
   controllers: [AuthController],
   providers: [FirebaseService, AdminService, AdminGuard],
-  exports: [AdminGuard, AdminService],
+  exports: [AdminGuard, AdminService, FirebaseService],
 })
 export class AuthModule {}
