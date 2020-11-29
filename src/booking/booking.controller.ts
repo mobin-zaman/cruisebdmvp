@@ -9,6 +9,7 @@ import {
   Param,
   Post,
   Res,
+  UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -20,6 +21,7 @@ import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
 import { RouteIdDepartureDateValidationPipe } from './pipes/routeId-deaprturedate-validationpipe';
 import { BookSeatDto } from './dto/book-seat.dto';
 import * as fs from 'fs';
+import { AgentGuard } from 'src/auth/agent.guard';
 
 @Controller('booking')
 export class BookingController {
@@ -31,18 +33,24 @@ export class BookingController {
    * @UseInterceptors(TransformInterceptor) is used for hiding the fields from the model
    * field hiding is achieved by the class transformer package
    */
+  //TODO:
+  //There should be a controller for this kind of general common endpoints
+  //only checking firebase token will suffice in this cases
+  @UseGuards(AgentGuard)
   @Get('/ships')
   @UseInterceptors(TransformInterceptor)
   getShips() {
     return this.bookingService.getShips();
   }
 
+  @UseGuards(AgentGuard)
   @Get('/ships/:ships_id/seat-category/')
   @UseInterceptors(TransformInterceptor)
   getSeatCategory(@Param('ships_id') shipId) {
     return this.bookingService.getSeatCategories(shipId);
   }
 
+  @UseGuards(AgentGuard)
   @Post('/seat-status/')
   @UsePipes(ValidationPipe) //it is added to class-transformer package to work
   @UseInterceptors(TransformInterceptor)
@@ -55,6 +63,7 @@ export class BookingController {
     );
   }
 
+  @UseGuards(AgentGuard)
   @Post('/seat-book/')
   @UsePipes(ValidationPipe)
   async bookSeats(@Body() bookSeatDto: BookSeatDto) {
