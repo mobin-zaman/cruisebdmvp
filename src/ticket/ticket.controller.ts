@@ -6,16 +6,11 @@ import { TicketService } from './ticket.service';
 
 @Controller('ticket')
 export class TicketController {
+  constructor(@Inject(TicketService) private ticketService: TicketService) {}
 
-    constructor(@Inject(TicketService) private ticketService: TicketService){}
-
-
-
-    @UseGuards(AgentGuard)
-    @Get('/')
-    async getTicketsOfAgent(@CurrentUser() currentUser: Agent){
-        return await this.getTicketsOfAgent(currentUser);
-    }
-
-    
+  @UseGuards(AgentGuard)
+  @Get('/')
+  async getTicketsOfAgent(@CurrentUser() currentUser: Agent) {
+    return await this.getTicketsOfAgent(currentUser);
+  }
 }

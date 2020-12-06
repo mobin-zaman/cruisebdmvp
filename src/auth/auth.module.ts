@@ -12,7 +12,19 @@ import { FirebaseService } from './firebase.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Admin, Agent])],
   controllers: [AuthController],
-  providers: [FirebaseService, AdminService, AdminGuard, AgentService, AgentGuard],
-  exports: [AdminGuard, AdminService, AgentGuard, AgentService, FirebaseService],
+  providers: [
+    FirebaseService,
+    AdminService,
+    AdminGuard,
+    AgentService,
+    AgentGuard,
+  ],
+  exports: [
+    AdminGuard,
+    AdminService,
+    AgentGuard,
+    AgentService,
+    FirebaseService,
+  ],
 })
 export class AuthModule {}

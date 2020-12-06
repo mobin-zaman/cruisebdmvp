@@ -50,8 +50,7 @@ export class Agent extends BaseEntity {
 
   @OneToMany(
     type => Ticket,
-    ticket => ticket.agent
+    ticket => ticket.agent,
   )
-  tickets: Promise<Ticket[]>
-    
+  tickets: Promise<Ticket[]>;
 }
