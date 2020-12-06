@@ -1,4 +1,6 @@
 import { Agency } from 'src/agency/agency.entity';
+import { Ticket } from 'src/ticket/ticket.entity';
+
 import {
   BaseEntity,
   Entity,
@@ -6,6 +8,7 @@ import {
   Column,
   Unique,
   ManyToOne,
+  OneToMany,
 } from 'typeorm';
 
 @Entity()
@@ -44,4 +47,11 @@ export class Agent extends BaseEntity {
     agency => agency.agents,
   )
   agency: Agency;
+
+  @OneToMany(
+    type => Ticket,
+    ticket => ticket.agent
+  )
+  tickets: Ticket[]
+    
 }

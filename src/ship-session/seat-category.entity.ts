@@ -3,10 +3,12 @@ import {
   Column,
   Entity,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Ship } from './ship.entity';
 import { Exclude } from 'class-transformer';
+import { Ticket } from 'src/ticket/ticket.entity';
 
 @Entity()
 /**
@@ -35,4 +37,10 @@ export class SeatCategory extends BaseEntity {
     { eager: false, nullable: false },
   )
   ship: Promise<Ship>;
+
+  @OneToMany(
+    type=> Ticket,
+    ticket => ticket.route
+  )
+  tickets: Promise<Ticket[]>
 }

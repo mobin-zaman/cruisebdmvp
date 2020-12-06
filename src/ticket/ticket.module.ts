@@ -2,9 +2,11 @@ import { Module } from '@nestjs/common';
 import { TicketService } from './ticket.service';
 import { TicketController } from './ticket.controller';
 import {AuthModule} from '../auth/auth.module';
+import { Ticket } from './ticket.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
-  imports:[AuthModule],
+  imports:[AuthModule, TypeOrmModule.forFeature([Ticket])],
   providers: [ TicketService],
   controllers: [TicketController]
 })

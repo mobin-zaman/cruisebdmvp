@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Ship } from './ship.entity';
 import { Exclude } from 'class-transformer';
+import { Ticket } from 'src/ticket/ticket.entity';
 
 @Entity()
 export class Routes extends BaseEntity {
@@ -65,4 +66,10 @@ export class Routes extends BaseEntity {
     { eager: false },
   )
   ship: Promise<Ship>;
+
+  @OneToMany(
+    type=> Ticket,
+    ticket => ticket.route
+  )
+  tickets: Promise<Ticket[]>
 }
