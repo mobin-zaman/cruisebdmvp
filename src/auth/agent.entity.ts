@@ -52,6 +52,6 @@ export class Agent extends BaseEntity {
     type => Ticket,
     ticket => ticket.agent
   )
-  tickets: Ticket[]
+  tickets: Promise<Ticket[]>
     
 }
