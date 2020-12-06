@@ -101,6 +101,8 @@ export class ShipSessionService {
       mobileNumber,
       ticketPath,
     );
+
+    return { ticketPath };
   }
 
   async getTicket(ticketName: string) {

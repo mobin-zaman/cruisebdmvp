@@ -17,6 +17,7 @@ export class Ticket extends BaseEntity {
   id: number;
 
   @ManyToOne(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     type => Agent,
     agent => agent.tickets,
   )
@@ -26,6 +27,7 @@ export class Ticket extends BaseEntity {
   //seatCategory
 
   @ManyToOne(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     type => Routes,
     routes => routes.tickets,
   )
