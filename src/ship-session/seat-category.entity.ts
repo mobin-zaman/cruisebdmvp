@@ -39,8 +39,8 @@ export class SeatCategory extends BaseEntity {
   ship: Promise<Ship>;
 
   @OneToMany(
-    type=> Ticket,
-    ticket => ticket.route
+    type => Ticket,
+    ticket => ticket.route,
   )
-  tickets: Promise<Ticket[]>
+  tickets: Promise<Ticket[]>;
 }
