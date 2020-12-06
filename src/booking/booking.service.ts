@@ -1,15 +1,19 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { Agent } from 'src/auth/agent.entity';
 import { ShipSessionService } from '../ship-session/ship-session.service';
 import { BookSeatDto } from './dto/book-seat.dto';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
 
 @Injectable()
 export class BookingService {
-  constructor(private shipSessionService: ShipSessionService) {}
+  constructor(
+    private shipSessionService: ShipSessionService,
+  ) {}
 
   async getShips() {
     return this.shipSessionService.getAllShip();
@@ -40,9 +44,9 @@ export class BookingService {
     }
   }
 
-  async bookSeat(bookSeatDto: BookSeatDto) {
+  async bookSeat(bookSeatDto: BookSeatDto, agent: Agent){
     try {
-      return await this.shipSessionService.bookSeats(bookSeatDto);
+      return await this.shipSessionService.bookSeats(bookSeatDto, agent);
     } catch (e) {
       console.log('Error booking seat: ', e);
       throw new BadRequestException('Error booking seats', e.message);

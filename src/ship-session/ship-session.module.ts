@@ -5,6 +5,7 @@ import { Ship } from './ship.entity';
 import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
 import { Routes } from './routes.entity';
+import { TicketModule } from 'src/ticket/ticket.module';
 
 /**
  * This module is going to be responsible for
@@ -12,7 +13,7 @@ import { Routes } from './routes.entity';
  * 2.Running the scraping session
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Ship, SeatCategory, Routes])],
+  imports: [TypeOrmModule.forFeature([Ship, SeatCategory, Routes]), TicketModule],
   providers: [
     ShipSessionService,
     ShipScrapperPuppeteer,

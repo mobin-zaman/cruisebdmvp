@@ -282,6 +282,7 @@ export class ScrappingService {
     //Then verify if any of the seatIds is missing from availableSeat
     //if missing that means the seat is not available
 
+    //!TODO: price will be found here, add the price and and send it to this.saveAndUploadTicket
     seatIds.forEach(seatId => {
       const seatFound = availableSeats.find(x => x.id === seatId);
       if (!seatFound) {
@@ -324,7 +325,7 @@ export class ScrappingService {
     return await this.saveAndUploadTicket();
   }
 
-  private async saveAndUploadTicket(): Promise<{ ticketPath: string }> {
+  private async saveAndUploadTicket(): Promise<{ ticketPath: string, price: number }> {
     const LASER_PRINTER_SELECTOR = '#laser_printer';
     // const PRINT_POP_UP_BUTTON = "#print_tkt";
 
@@ -347,6 +348,7 @@ export class ScrappingService {
 
     return {
       ticketPath: pdfPath,
+      price: 1000
     };
   }
 

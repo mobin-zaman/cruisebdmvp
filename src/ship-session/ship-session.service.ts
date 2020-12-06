@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ship } from './ship.entity';
 import { Repository } from 'typeorm';
@@ -9,6 +9,8 @@ import { Routes } from './routes.entity';
 import { BookSeatDto } from 'src/booking/dto/book-seat.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import { TicketService } from 'src/ticket/ticket.service';
+import { Agent } from 'src/auth/agent.entity';
 
 @Injectable()
 export class ShipSessionService {
@@ -20,6 +22,7 @@ export class ShipSessionService {
     @InjectRepository(Routes)
     private routesRepository: Repository<Routes>,
     private shipScrapperPuppeteer: ShipScrapperPuppeteer,
+    @Inject(TicketService) private ticketService: TicketService
   ) {}
 
   getAllShip(): Promise<Ship[]> {
@@ -57,7 +60,7 @@ export class ShipSessionService {
     );
   }
 
-  async bookSeats(bookSeatDto: BookSeatDto) {
+  async bookSeats(bookSeatDto: BookSeatDto, agent: Agent) {
     const {
       routeId,
       seatCategoryId,
@@ -85,11 +88,10 @@ export class ShipSessionService {
       mobileNumber,
     );
 
-    const { ticketPath } = result;
+    const { ticketPath, price } = result;
 
-    const buffer = fs.readFileSync(ticketPath);
+    await this.ticketService.insertTicket(agent,route,seatCategory,departureDate,price,seatIds,customerName,mobileNumber,ticketPath);
 
-    return buffer;
   }
 
   async getTicket(ticketName: string) {

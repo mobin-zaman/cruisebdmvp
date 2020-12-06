@@ -6,9 +6,7 @@ import {
   CreateDateColumn,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
-  Unique,
 } from 'typeorm';
 
 import { Agent } from '../auth/agent.entity';
@@ -39,11 +37,24 @@ export class Ticket extends BaseEntity {
   )
   seatCategory: SeatCategory;
 
+  @Column()
+  departureDate: string;
+
   @Column('simple-array')
   seatIds: string[];
 
   @Column()
   price: number;
+
+  @Column()
+  filePath: string;
+
+  @Column()
+  customerName: string;
+
+  @Column()
+  customerMobileNumber: string;
+
 
   @CreateDateColumn({
     type: 'timestamp',

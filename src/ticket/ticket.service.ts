@@ -20,8 +20,12 @@ export class TicketService {
     agent: Agent,
     route: Routes,
     seatCategory: SeatCategory,
+    departureDate:string,
     price: number,
-    seatIds: [string],
+    seatIds: string[],
+    customerName: string,
+    customerMobileNumber: string,
+    filePath: string,
   ) {
     const newTicket = new Ticket();
 
@@ -29,7 +33,11 @@ export class TicketService {
     newTicket.route = route;
     newTicket.seatCategory = seatCategory;
     newTicket.price = price;
+    newTicket.departureDate = departureDate;
     newTicket.seatIds = seatIds;
+    newTicket.filePath = filePath;
+    newTicket.customerName = customerName;
+    newTicket.customerMobileNumber = customerMobileNumber;
 
     await this.ticketRepository.save(newTicket);
   }
