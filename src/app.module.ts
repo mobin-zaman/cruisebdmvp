@@ -15,6 +15,7 @@ import { AgencyModule } from './agency/agency.module';
 import { Agency } from './agency/agency.entity';
 import { Agent } from './auth/agent.entity';
 import { AgentModule } from './agent/agent.module';
+import { TicketModule } from './ticket/ticket.module';
 
 const firebaseConfigJsonPath: string = path.join(
   process.cwd(),
@@ -50,6 +51,7 @@ const firebaseConfigJsonPath: string = path.join(
     BookingModule,
     AgencyModule,
     AgentModule,
+    TicketModule,
   ],
 })
 export class AppModule {}
