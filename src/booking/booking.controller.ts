@@ -22,6 +22,8 @@ import { RouteIdDepartureDateValidationPipe } from './pipes/routeId-deaprturedat
 import { BookSeatDto } from './dto/book-seat.dto';
 import * as fs from 'fs';
 import { AgentGuard } from 'src/auth/agent.guard';
+import { CurrentUser } from 'src/auth/get-user.decorator';
+import { Agent } from 'src/auth/agent.entity';
 
 @Controller('booking')
 export class BookingController {
@@ -66,8 +68,8 @@ export class BookingController {
   @UseGuards(AgentGuard)
   @Post('/seat-book/')
   @UsePipes(ValidationPipe)
-  async bookSeats(@Body() bookSeatDto: BookSeatDto) {
-    return await this.bookingService.bookSeat(bookSeatDto);
+  async bookSeats(@Body() bookSeatDto: BookSeatDto, @CurrentUser() agent:Agent) {
+    return await this.bookingService.bookSeat(bookSeatDto, agent);
   }
 
   /**
