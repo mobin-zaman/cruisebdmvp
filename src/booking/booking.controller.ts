@@ -68,7 +68,10 @@ export class BookingController {
   @UseGuards(AgentGuard)
   @Post('/seat-book/')
   @UsePipes(ValidationPipe)
-  async bookSeats(@Body() bookSeatDto: BookSeatDto, @CurrentUser() agent:Agent) {
+  async bookSeats(
+    @Body() bookSeatDto: BookSeatDto,
+    @CurrentUser() agent: Agent,
+  ) {
     return await this.bookingService.bookSeat(bookSeatDto, agent);
   }
 
