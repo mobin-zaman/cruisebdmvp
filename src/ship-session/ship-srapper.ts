@@ -282,12 +282,17 @@ export class ScrappingService {
     //Then verify if any of the seatIds is missing from availableSeat
     //if missing that means the seat is not available
 
+    /**
+     * Total price is going to provide the value to pass, in order to pass the total price to the controller
+     */
+    let totalPrice = 0;
+
     //!TODO: price will be found here, add the price and and send it to this.saveAndUploadTicket
     seatIds.forEach(seatId => {
       const seatFound = availableSeats.find(x => x.id === seatId);
       if (!seatFound) {
         throw new Error(`seatId: ${seatId} is not available`);
-      }
+      } else totalPrice += parseInt(seatFound.seat_fare);
     });
 
     //now click the category button to make seats visible
@@ -322,10 +327,12 @@ export class ScrappingService {
     await this.page.click(purchaseButtonSelector);
 
     // saveAndUploadTicket takes care of the conversion and returning the filePath of the ticket
-    return await this.saveAndUploadTicket();
+    return await this.saveAndUploadTicket(totalPrice);
   }
 
-  private async saveAndUploadTicket(): Promise<{ ticketPath: string, price: number }> {
+  private async saveAndUploadTicket(
+    totalPrice: number,
+  ): Promise<{ ticketPath: string; price: number }> {
     const LASER_PRINTER_SELECTOR = '#laser_printer';
     // const PRINT_POP_UP_BUTTON = "#print_tkt";
 
@@ -348,7 +355,8 @@ export class ScrappingService {
 
     return {
       ticketPath: pdfPath,
-      price: 1000
+      //!TODO: fix the price
+      price: totalPrice,
     };
   }
 

@@ -22,7 +22,7 @@ export class ShipSessionService {
     @InjectRepository(Routes)
     private routesRepository: Repository<Routes>,
     private shipScrapperPuppeteer: ShipScrapperPuppeteer,
-    @Inject(TicketService) private ticketService: TicketService
+    @Inject(TicketService) private ticketService: TicketService,
   ) {}
 
   getAllShip(): Promise<Ship[]> {
@@ -90,8 +90,17 @@ export class ShipSessionService {
 
     const { ticketPath, price } = result;
 
-    await this.ticketService.insertTicket(agent,route,seatCategory,departureDate,price,seatIds,customerName,mobileNumber,ticketPath);
-
+    await this.ticketService.insertTicket(
+      agent,
+      route,
+      seatCategory,
+      departureDate,
+      price,
+      seatIds,
+      customerName,
+      mobileNumber,
+      ticketPath,
+    );
   }
 
   async getTicket(ticketName: string) {

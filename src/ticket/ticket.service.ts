@@ -20,7 +20,7 @@ export class TicketService {
     agent: Agent,
     route: Routes,
     seatCategory: SeatCategory,
-    departureDate:string,
+    departureDate: string,
     price: number,
     seatIds: string[],
     customerName: string,

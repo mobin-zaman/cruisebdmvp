@@ -13,7 +13,10 @@ import { TicketModule } from 'src/ticket/ticket.module';
  * 2.Running the scraping session
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([Ship, SeatCategory, Routes]), TicketModule],
+  imports: [
+    TypeOrmModule.forFeature([Ship, SeatCategory, Routes]),
+    TicketModule,
+  ],
   providers: [
     ShipSessionService,
     ShipScrapperPuppeteer,

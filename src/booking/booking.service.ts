@@ -11,9 +11,7 @@ import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
 
 @Injectable()
 export class BookingService {
-  constructor(
-    private shipSessionService: ShipSessionService,
-  ) {}
+  constructor(private shipSessionService: ShipSessionService) {}
 
   async getShips() {
     return this.shipSessionService.getAllShip();
@@ -44,7 +42,7 @@ export class BookingService {
     }
   }
 
-  async bookSeat(bookSeatDto: BookSeatDto, agent: Agent){
+  async bookSeat(bookSeatDto: BookSeatDto, agent: Agent) {
     try {
       return await this.shipSessionService.bookSeats(bookSeatDto, agent);
     } catch (e) {
