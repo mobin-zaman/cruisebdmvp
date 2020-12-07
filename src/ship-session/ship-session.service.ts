@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Ship } from './ship.entity';
-import { Repository } from 'typeorm';
+import { ObjectID, Repository } from 'typeorm';
 import { GetSeatCategoryInfoDto } from '../booking/dto/get-seat-category-info.dto';
 import { SeatCategory } from './seat-category.entity';
 import { ShipScrapperPuppeteer } from './ship-scrapper.puppeteer';
@@ -37,7 +37,7 @@ export class ShipSessionService {
     return await ships.seatCategories;
   }
 
-  async getRoutes(id) {
+  async getRoutes(id: string | number | Date | ObjectID) {
     const ship: Ship = await this.shipRepository.findOne(id);
     if (!ship) throw Error('Ship not found');
 
@@ -60,6 +60,12 @@ export class ShipSessionService {
     );
   }
 
+  /**
+   *For the sake of convenience, this method is handling the record keeping of ticket purchase,
+   it maybe reorganized to put it in the booking module later on.
+   * @param bookSeatDto 
+   * @param agent 
+   */
   async bookSeats(bookSeatDto: BookSeatDto, agent: Agent) {
     const {
       routeId,
