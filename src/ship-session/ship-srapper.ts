@@ -2,7 +2,7 @@ import { nanoid } from 'nanoid';
 import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
 import convertFromHtmlToPdf from './html2pdf';
-
+import * as fs from 'fs';
 /**
  * Ref: https://github.com/puppeteer/puppeteer/issues/6214
  */
@@ -372,6 +372,7 @@ export class ScrappingService {
 
     const seats = await html2jsonExtractSeatInfo(innerHtml);
 
+    // console.log("innerhtml: ", innerHtml);
     return this.processSeatsJsonInfo(seats);
   }
 
@@ -386,11 +387,21 @@ export class ScrappingService {
     // }, []);
 
     const availableSeats = [];
+    // console.log("Seats here: ", seats);
+    // fs.writeFile("test.txt", JSON.stringify(seats), 'utf8' ,function(err) {
+    //   if(err) {
+    //     console.log(err);
+    //   }
+    // })
     for (const seat of seats) {
       if (
-        seat.attr.status === 'available' &&
-        seat.attr.title !== 'Not Avalable'
+        // seat.attr.status === 'available' &&
+        // seat.attr.title !== 'Not Avalable'
+        seat.attr.class === 'tck_seat_hr_checkbox seat_unchecked'
       ) {
+        if(seat.deck_title === "Super Luxury Ac") {
+          console.log("seat is here: ", seat);
+        }
         availableSeats.push(seat.attr);
       }
     }
