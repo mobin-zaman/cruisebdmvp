@@ -67,48 +67,52 @@ export class ShipSessionService {
    * @param agent 
    */
   async bookSeats(bookSeatDto: BookSeatDto, agent: Agent) {
-    const {
-      routeId,
-      seatCategoryId,
-      seatIds,
-      departureDate,
-      customerName,
-      mobileNumber,
-    } = bookSeatDto;
+    try {
+      const {
+        routeId,
+        seatCategoryId,
+        seatIds,
+        departureDate,
+        customerName,
+        mobileNumber,
+      } = bookSeatDto;
 
-    const route: Routes = await this.routesRepository.findOne(routeId);
+      const route: Routes = await this.routesRepository.findOne(routeId);
 
-    const seatCategory: SeatCategory = await this.seatCategoryRepository.findOne(
-      seatCategoryId,
-    );
+      const seatCategory: SeatCategory = await this.seatCategoryRepository.findOne(
+        seatCategoryId,
+      );
 
-    const ship: Ship = await route.ship;
+      const ship: Ship = await route.ship;
 
-    const result = await this.shipScrapperPuppeteer.bookSeats(
-      ship,
-      route,
-      seatCategory,
-      seatIds,
-      departureDate,
-      customerName,
-      mobileNumber,
-    );
+      const result = await this.shipScrapperPuppeteer.bookSeats(
+        ship,
+        route,
+        seatCategory,
+        seatIds,
+        departureDate,
+        customerName,
+        mobileNumber,
+      );
 
-    const { ticketPath, price } = result;
+      const { ticketPath, price } = result;
 
-    await this.ticketService.insertTicket(
-      agent,
-      route,
-      seatCategory,
-      departureDate,
-      price,
-      seatIds,
-      customerName,
-      mobileNumber,
-      ticketPath,
-    );
+      await this.ticketService.insertTicket(
+        agent,
+        route,
+        seatCategory,
+        departureDate,
+        price,
+        seatIds,
+        customerName,
+        mobileNumber,
+        ticketPath,
+      );
 
-    return { ticketPath };
+      return { ticketUrl: ticketPath };
+    } catch (err) {
+      throw err;
+    }
   }
 
   async getTicket(ticketName: string) {

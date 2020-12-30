@@ -12,6 +12,7 @@ export class TicketService {
     @InjectRepository(Ticket) private ticketRepository: Repository<Ticket>,
   ) {}
 
+  //FIXME: this needs to be checked properly
   async getAllTicketsAgent(currentUser: Agent) {
     return await currentUser.tickets;
   }
