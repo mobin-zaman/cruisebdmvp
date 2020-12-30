@@ -399,8 +399,8 @@ export class ScrappingService {
         // seat.attr.title !== 'Not Avalable'
         seat.attr.class === 'tck_seat_hr_checkbox seat_unchecked'
       ) {
-        if(seat.deck_title === "Super Luxury Ac") {
-          console.log("seat is here: ", seat);
+        if (seat.deck_title === 'Super Luxury Ac') {
+          console.log('seat is here: ', seat);
         }
         availableSeats.push(seat.attr);
       }

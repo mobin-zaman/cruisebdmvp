@@ -14,6 +14,5 @@ export class TicketController {
     return await this.getTicketsOfAgent(currentUser);
   }
 
-
   //*TODO: cancel request post will be added
 }
