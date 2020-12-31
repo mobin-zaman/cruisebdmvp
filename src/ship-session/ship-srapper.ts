@@ -3,6 +3,7 @@ import solveCaptcha from './trucaptchasolver';
 import { Browser, Page } from 'puppeteer';
 import convertFromHtmlToPdf from './html2pdf';
 import * as fs from 'fs';
+import * as path from 'path';
 /**
  * Ref: https://github.com/puppeteer/puppeteer/issues/6214
  */
@@ -354,7 +355,7 @@ export class ScrappingService {
     const pdfPath = await convertFromHtmlToPdf(ticketContentsHtml);
 
     return {
-      ticketPath: pdfPath,
+      ticketPath: path.basename(pdfPath), //it is supposed to return the file name only
       //!TODO: fix the price
       price: totalPrice,
     };
@@ -372,7 +373,6 @@ export class ScrappingService {
 
     const seats = await html2jsonExtractSeatInfo(innerHtml);
 
-    // console.log("innerhtml: ", innerHtml);
     return this.processSeatsJsonInfo(seats);
   }
 

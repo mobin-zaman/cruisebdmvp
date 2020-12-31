@@ -2,22 +2,18 @@ import {
   Body,
   Controller,
   Get,
-  NotFoundException,
   Param,
   Post,
-  Res,
   UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { Response } from 'express';
 import { BookingService } from './booking.service';
 import { TransformInterceptor } from './transform.interceptor';
 import { GetSeatCategoryInfoDto } from './dto/get-seat-category-info.dto';
 import { RouteIdDepartureDateValidationPipe } from './pipes/routeId-deaprturedate-validationpipe';
 import { BookSeatDto } from './dto/book-seat.dto';
-import * as fs from 'fs';
 import { AgentGuard } from 'src/auth/agent.guard';
 import { CurrentUser } from 'src/auth/get-user.decorator';
 import { Agent } from 'src/auth/agent.entity';
@@ -72,30 +68,6 @@ export class BookingController {
     return await this.bookingService.bookSeat(bookSeatDto, agent);
   }
 
-  /**
-   * Reference for returning pdf from nextjs: https://github.com/nestjs/nest/issues/1090
-   * ! TODO: fix access rights of the tickets
-   * @param res
-   * @param ticketName
-   */
 
-  @Get('/ticket/:ticketName')
-  async getTicket(
-    @Res() res: Response,
-    @Param('ticketName') ticketName: string,
-  ) {
-    try {
-      const filePath = await this.bookingService.getTicket(ticketName);
 
-      const stream = fs.createReadStream(filePath);
-
-      res.set({
-        'Content-Type': 'application/pdf',
-      });
-
-      stream.pipe(res);
-    } catch (e) {
-      throw new NotFoundException('ticket not found');
-    }
-  }
 }

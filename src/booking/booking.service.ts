@@ -49,13 +49,4 @@ export class BookingService {
       throw new BadRequestException('Error booking seats', e.message);
     }
   }
-
-  async getTicket(ticketName) {
-    try {
-      return await this.shipSessionService.getTicket(ticketName);
-    } catch (e) {
-      console.log('Error getting tickets: ', e);
-      throw new BadRequestException('Error getting tickets: ', e);
-    }
-  }
 }

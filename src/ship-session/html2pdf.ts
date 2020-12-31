@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
 import * as path from 'path';
+import {TICKET_DIRECTORY} from '../constants';
 
 const BASE_URL = 'https://api.html2pdf.app/v1/generate';
 
@@ -34,9 +35,9 @@ export default async function convertFromHtmlToPdf(html: string) {
 
     console.log('Filename of the pdf: ', fileName);
 
-    const TICKET_DIR = path.join(process.cwd(), 'tickets');
+    // const TICKET_DIR = path.join(process.cwd(), 'tickets');
 
-    const filePath = path.join(TICKET_DIR, fileName);
+    const filePath = path.join(TICKET_DIRECTORY, fileName);
 
     response.data.pipe(fs.createWriteStream(filePath));
 
