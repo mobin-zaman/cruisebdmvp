@@ -3,7 +3,7 @@ import * as fs from 'fs';
 import { ConfigService } from '@nestjs/config';
 import { nanoid } from 'nanoid';
 import * as path from 'path';
-import {TICKET_DIRECTORY} from '../constants';
+import { TICKET_DIRECTORY } from '../constants';
 
 const BASE_URL = 'https://api.html2pdf.app/v1/generate';
 

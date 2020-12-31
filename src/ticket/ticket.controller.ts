@@ -1,5 +1,13 @@
-import { Controller, Get, Inject, NotFoundException, Param, Res, UseGuards } from '@nestjs/common';
-import {Response} from 'express';
+import {
+  Controller,
+  Get,
+  Inject,
+  NotFoundException,
+  Param,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { Response } from 'express';
 import { Agent } from 'src/auth/agent.entity';
 import { AgentGuard } from 'src/auth/agent.guard';
 import { CurrentUser } from 'src/auth/get-user.decorator';
@@ -16,38 +24,30 @@ export class TicketController {
     return await this.getTicketsOfAgent(currentUser);
   }
 
-
   //* reference: https://stackoverflow.com/questions/62797984/how-to-download-pdf-from-puppeteer-using-nest-js-as-server-side-and-react-in-cli
   @Get('/ticket/:ticketId')
-  async getTicket(
-    @Res() res: Response,
-    @Param('ticketId') ticketId: number,
-  ) {
+  async getTicket(@Res() res: Response, @Param('ticketId') ticketId: number) {
     try {
       //TODO: validation needs to be added here
 
-      const filePath  = await this.ticketService.getTicket(ticketId);
+      const filePath = await this.ticketService.getTicket(ticketId);
 
       const buffer = fs.readFileSync(filePath);
-
-      
 
       res.set({
         'Content-Type': 'application/pdf',
         'Content-Disposition': 'attachment; filename=invoice.pdf',
-      'Content-Length': buffer.length,
+        'Content-Length': buffer.length,
 
-      // prevent cache
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': 0,
+        // prevent cache
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        Pragma: 'no-cache',
+        Expires: 0,
       });
 
       res.end(buffer);
-
     } catch (e) {
       throw new NotFoundException('ticket not found');
     }
   }
-
 }

@@ -67,7 +67,4 @@ export class BookingController {
   ) {
     return await this.bookingService.bookSeat(bookSeatDto, agent);
   }
-
-
-
 }
