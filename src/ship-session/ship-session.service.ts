@@ -97,7 +97,7 @@ export class ShipSessionService {
 
       const { ticketPath, price } = result;
 
-      await this.ticketService.insertTicket(
+      const ticket = await this.ticketService.insertTicket(
         agent,
         route,
         seatCategory,
@@ -109,25 +109,11 @@ export class ShipSessionService {
         ticketPath,
       );
 
-      return { ticketUrl: ticketPath };
+      // return { ticketUrl: ticketPath };
+
+      return { ticket };
     } catch (err) {
       throw err;
     }
-  }
-
-  async getTicket(ticketName: string) {
-    const TICKET_DIR = path.join(process.cwd(), 'tickets');
-
-    const filePath = path.join(TICKET_DIR, ticketName);
-
-    //now check if file exists
-    // * Ref: https://stackoverflow.com/questions/17699599/node-js-check-if-file-exists
-    try {
-      await fs.promises.access(filePath);
-    } catch (e) {
-      throw e;
-    }
-
-    return filePath;
   }
 }

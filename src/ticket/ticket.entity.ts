@@ -49,7 +49,7 @@ export class Ticket extends BaseEntity {
   price: number;
 
   @Column()
-  filePath: string;
+  fileName: string;
 
   @Column()
   customerName: string;
