@@ -6,7 +6,7 @@ import { Agent } from 'src/auth/agent.entity';
 import { Routes } from 'src/ship-session/routes.entity';
 import { SeatCategory } from 'src/ship-session/seat-category.entity';
 import { TICKET_DIRECTORY } from '../constants';
-import path from 'path';
+import * as  path from 'path';
 import * as fs from 'fs';
 
 @Injectable()
@@ -50,6 +50,8 @@ export class TicketService {
     //validation is being added later, validation of whether current user owns the ticket or not
 
     const ticket = await this.ticketRepository.findOne(ticketId);
+
+    console.log("ticket: ", ticket);
 
     const filePath = path.join(TICKET_DIRECTORY, ticket.fileName); //here file path is the name of the ticket
 

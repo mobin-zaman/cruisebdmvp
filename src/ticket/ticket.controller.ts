@@ -25,7 +25,7 @@ export class TicketController {
   }
 
   //* reference: https://stackoverflow.com/questions/62797984/how-to-download-pdf-from-puppeteer-using-nest-js-as-server-side-and-react-in-cli
-  @Get('/ticket/:ticketId')
+  @Get('/:ticketId/pdf')
   async getTicket(@Res() res: Response, @Param('ticketId') ticketId: number) {
     try {
       //TODO: validation needs to be added here
@@ -36,7 +36,7 @@ export class TicketController {
 
       res.set({
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=invoice.pdf',
+        'Content-Disposition': 'attachment; filename=ticket.pdf',
         'Content-Length': buffer.length,
 
         // prevent cache
@@ -47,6 +47,7 @@ export class TicketController {
 
       res.end(buffer);
     } catch (e) {
+      console.log("Get Ticket error: ", e);
       throw new NotFoundException('ticket not found');
     }
   }
