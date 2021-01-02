@@ -47,7 +47,7 @@ export class ScrappingService {
           '--single-process', // <- this one doesn't works in Windows
           '--disable-gpu',
         ],
-        headless: false,
+        headless: true,
       };
       const browser: Browser = await puppeteer.launch(launchOptions);
       /**
