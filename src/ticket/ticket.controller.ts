@@ -25,6 +25,7 @@ export class TicketController {
   }
 
   //* reference: https://stackoverflow.com/questions/62797984/how-to-download-pdf-from-puppeteer-using-nest-js-as-server-side-and-react-in-cli
+  // @UseGuards(AgentGuard)
   @Get('/:ticketId/pdf')
   async getTicket(@Res() res: Response, @Param('ticketId') ticketId: number) {
     try {

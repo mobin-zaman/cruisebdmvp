@@ -111,7 +111,7 @@ export class ShipSessionService {
 
       // return { ticketUrl: ticketPath };
 
-      return { ticket };
+      return { ticketId: ticket.id };
     } catch (err) {
       throw err;
     }
