@@ -21,7 +21,7 @@ export class TicketController {
   @UseGuards(AgentGuard)
   @Get('/')
   async getTicketsOfAgent(@CurrentUser() currentUser: Agent) {
-    return await this.getTicketsOfAgent(currentUser);
+    return await this.ticketService.getAllTicketsAgent(currentUser);
   }
 
   //* reference: https://stackoverflow.com/questions/62797984/how-to-download-pdf-from-puppeteer-using-nest-js-as-server-side-and-react-in-cli
