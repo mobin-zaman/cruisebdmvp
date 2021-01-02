@@ -43,7 +43,7 @@ export class TicketService {
     newTicket.customerName = customerName;
     newTicket.customerMobileNumber = customerMobileNumber;
 
-    await this.ticketRepository.save(newTicket);
+    return await this.ticketRepository.save(newTicket);
   }
 
   async getTicket(ticketId) {

@@ -34,6 +34,7 @@ export class Ticket extends BaseEntity {
   route: Routes;
 
   @ManyToOne(
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     type => SeatCategory,
     seatCategory => seatCategory.tickets,
   )
