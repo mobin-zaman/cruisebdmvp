@@ -1,75 +1,115 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# CruiseBD MVP — Booking API
 
-[travis-image]: https://api.travis-ci.org/nestjs/nest.svg?branch=master
-[travis-url]: https://travis-ci.org/nestjs/nest
-[linux-image]: https://img.shields.io/travis/nestjs/nest/master.svg?label=linux
-[linux-url]: https://travis-ci.org/nestjs/nest
-  
-  <p align="center">A progressive <a href="http://nodejs.org" target="blank">Node.js</a> framework for building efficient and scalable server-side applications, heavily inspired by <a href="https://angular.io" target="blank">Angular</a>.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore"><img src="https://img.shields.io/npm/dm/@nestjs/core.svg" alt="NPM Downloads" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://api.travis-ci.org/nestjs/nest.svg?branch=master" alt="Travis" /></a>
-<a href="https://travis-ci.org/nestjs/nest"><img src="https://img.shields.io/travis/nestjs/nest/master.svg?label=linux" alt="Linux" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#5" alt="Coverage" /></a>
-<a href="https://gitter.im/nestjs/nestjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=body_badge"><img src="https://badges.gitter.im/nestjs/nestjs.svg" alt="Gitter" /></a>
-<a href="https://opencollective.com/nest#backer"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec"><img src="https://img.shields.io/badge/Donate-PayPal-dc3d53.svg"/></a>
-  <a href="https://twitter.com/nestframework"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Backend service for the CruiseBD MVP: a river-cruise ticket booking system for
+Bangladesh. It exposes a REST API that travel agents use to check seat
+availability and book tickets across multiple cruise operators, by automating
+the operators' own web-based seat selections with Puppeteer.
 
-## Description
+Built with [NestJS](https://nestjs.com), TypeORM, MySQL and Firebase
+Authentication.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Features
 
-## Installation
+- **Ship catalogue** — registered cruise operators and their vessels
+- **Seat availability** — live seat categories/flagship status per route + date
+- **Seat booking** — books seats on the operator's site through a headless
+  browser (Puppeteer) and issues a ticket PDF
+- **Agent auth** — Firebase ID-token based auth, with agency/agent/admin roles
+- **Ticket history** — stored PDFs for every booking
 
-```bash
-$ npm install
-```
+## Tech stack
 
-## Running the app
+- NestJS 7 / TypeScript
+- TypeORM + MySQL
+- Firebase Admin SDK (authentication)
+- Puppeteer (headless seat-selection automation on cruise-operator sites)
+- imgbb (image upload), html2pdf (ticket PDF generation)
+
+## Requirements
+
+- Node.js 12+ (npm)
+- A MySQL server
+- A Firebase project with an **Admin SDK service account** key
+- API keys for imgbb and html2pdf.app (both optional at runtime)
+
+## Setup
+
+1. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+2. **Environment variables**
+
+   Copy `.env.example` to `.env` and fill in the values:
+
+   ```dotenv
+   DATABASE_HOST=localhost
+   DATABASE_NAME=cruisebd
+   DATABASE_USER=root
+   DATABASE_PASS=your-db-password
+   DATABASE_PORT=3306
+   DATABASE_SYNC=true
+   IMAGE_BB_API_KEY=
+   HTML_2_PDF_API_KEY=
+   ```
+
+3. **Firebase Admin SDK credential**
+
+   Place your Firebase service-account JSON file at:
+
+   ```
+   config/<your-project>-firebase-adminsdk-<key>.json
+   ```
+
+   The exact path is referenced in `src/app.module.ts`. **Never commit a real
+   credential** — the `config/` directory is git-ignored (see `.gitignore`).
+
+4. **Database schema**
+
+   With `DATABASE_SYNC=true` (dev), TypeORM creates tables automatically on
+   boot. Seed the `ship`, `routes` and `seat_category` tables with your cruise
+   operators' details.
+
+## Running
 
 ```bash
 # development
-$ npm run start
+npm run start:dev
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# production
+npm run build && npm run start:prod
 ```
 
-## Test
+The API listens on **port 4000** by default.
+
+## API
+
+All endpoints require a valid Firebase ID token sent as
+`Authorization: Bearer <token>`. Endpoints:
+
+| Method | Path                                    | Description                          |
+|--------|-----------------------------------------|--------------------------------------|
+| GET    | `/booking/ships`                        | List ships and their seat categories |
+| GET    | `/booking/ships/:shipId/seat-category/` | Seat categories for a ship           |
+| POST   | `/booking/seat-status/`                 | Live seat availability for a route + date |
+| POST   | `/booking/seat-book/`                   | Book seats and issue a ticket        |
+
+## Tests
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm run test        # unit tests
+npm run test:e2e    # end-to-end tests
 ```
 
-## Support
+## Project layout
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- `src/agency`, `src/agent`, `src/auth` — agencies, agents and authentication
+- `src/booking` — seat availability and booking flows
+- `src/ship-session` — ship catalogue and the Puppeteer seat-selection logic
+- `src/ticket` — ticket and PDF handling
 
 ## License
 
-  Nest is [MIT licensed](LICENSE).
+UNLICENSED — private project. See `package.json`.

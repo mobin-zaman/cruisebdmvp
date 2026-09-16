@@ -34,4 +34,12 @@ lerna-debug.log*
 !.vscode/extensions.json
 .env
 
+# local credentials & data — never commit
+/config/
+/config/firebase-adminsdk-*.json
+/db_backup/
+/tickets/
+/insomnia_backup/
+test.txt
+
 /screenshots
