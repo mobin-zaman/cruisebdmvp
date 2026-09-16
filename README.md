@@ -110,6 +110,11 @@ npm run test:e2e    # end-to-end tests
 - `src/ship-session` — ship catalogue and the Puppeteer seat-selection logic
 - `src/ticket` — ticket and PDF handling
 
+## Related repository
+
+- [**cruisebdmvp-client**](https://github.com/mobin-zaman/cruisebdmvp-client) —
+  the CruiseBD booking web client (Next.js) that consumes this API.
+
 ## License
 
 UNLICENSED — private project. See `package.json`.
